@@ -13,6 +13,10 @@
 	
 	<body>
 
+		<a href="index.html">Back</a>
+
+		<br><br>
+
 		Hello World HTML <!-- the usual HTML way -->
 		<% out.println("<br>Hello World JSP"); %> <!-- output the same thing, but using jsp programming -->
 							  
@@ -82,6 +86,6 @@
 			</select>&nbsp;<br> <input type="submit" value="submit">
 		</form>
 	<br>
-
+	
 </body>
 </html>
