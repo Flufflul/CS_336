@@ -14,9 +14,11 @@
 <body>
 	
 	<a href="index.html">Back</a>
+	
+	<hr><br>
 
-	<div class="login-widget">
-		<h1>Login</h1>
+	<div class="login-widget" style="font-family: sans-serif; padding-left: 10px; border-left: 5px solid blue;">
+		<h2>Login</h2>
 		<form method="POST" action="login.jsp">
 			<table>
 				<tr>
@@ -32,7 +34,7 @@
 		</form>
 	</div>
 
-	<br><br>
+	<br>
 	
 </body>
 </html>
