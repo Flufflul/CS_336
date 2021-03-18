@@ -20,22 +20,10 @@ INSERT INTO users (username, password) VALUES ('also not real', 'password');
 INSERT INTO users (username, password) VALUES ('heyihavethesame', 'password');
 INSERT INTO users (username, password) VALUES ('mynameismypassword', 'mynameismypassword');
 
-/*
-INSERT INTO customer_rep VALUES ();
-INSERT INTO customer_rep VALUES ();
-INSERT INTO customer_rep VALUES ();
 
-INSERT INTO admin_staff VALUES ();
-INSERT INTO admin_staff VALUES ();
+INSERT INTO users (username, password) VALUES ('rep1', 'reppw');
+INSERT INTO customer_rep VALUES ((SELECT u.user_id FROM users u WHERE username = 'rep1'));
 
-INSERT INTO sellers VALUES ();
-INSERT INTO sellers VALUES ();
-INSERT INTO sellers VALUES ();
 
-INSERT INTO buyers VALUES ();
-INSERT INTO buyers VALUES ();
-INSERT INTO buyers VALUES ();
-INSERT INTO buyers VALUES ();
-INSERT INTO buyers VALUES ();
-INSERT INTO buyers VALUES ();
-*/
+INSERT INTO users (username, password) VALUES ('admin1', 'adminpw');
+INSERT INTO admin_staff VALUES ((SELECT u.user_id FROM users u WHERE username = 'admin1'));

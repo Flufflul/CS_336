@@ -17,17 +17,15 @@ CREATE TABLE IF NOT EXISTS Users(
 
 CREATE TABLE IF NOT EXISTS Customer_Rep(
 	user_id int not null auto_increment,
-	rep_key bool not null,
 
-	constraint primary key(user_id, rep_key),
+	constraint primary key(user_id),
     constraint foreign key(user_id) references Users(user_id)
 ) engine=innodb;
 
 CREATE TABLE IF NOT EXISTS Admin_Staff(
 	user_id int not null auto_increment,
-    admin_key bool not null,
     
-    constraint primary key(user_id, admin_key),
+    constraint primary key(user_id),
     constraint foreign key(user_id) references Users(user_id)
 ) engine=innodb;
 
