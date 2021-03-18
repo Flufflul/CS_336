@@ -1,0 +1,67 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1" import="com.cs336.pkg.*"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+<% page import="org.apache.commons.code.digest.DigestUtils"%>
+
+	<%
+
+
+		try(
+			/* not sure if this line is needed
+			Class.forName("com.mysql.jdbc.Driver).newInstance();*/
+			
+			ApplicationDB db = new ApplicationDB();
+			Connection newConn = DriverManager.getConnection();
+			PreparedStatement loginSTMT = newConn.prepareStatement("SELECT u.username, p.password FROM username, password WHERE username LIKE?");
+
+
+			//"username" and "password" would be the names of the HTML elements from the login form
+			String usernameInput = request.getParameter("username");
+			String passowrdInput = request.getParameter("password");
+
+
+			//get the result set associated with "usernameInput," get number of tuples
+			loginSTMT.setString(1, usernameInput);
+			ResultSet loginRS = loginSTMT.executeQuery();
+			int rows = loginSTMT.executeQuery();
+
+
+			
+			if(!loginRS.isBeforeFirst() || rows > 1){ //no such account with that username (or there is more than one person with username)
+				
+				//close result set, PreparedStatement, and connection
+				loginRS.close();
+				loginSTMT.close();
+				conn.close();
+				
+				return; //no such user with that username
+				
+			}else{
+				
+				//close result set, PreparedStatement, and connection
+				loginRS.close();
+				loginSTMT.close();
+				conn.close();
+				
+				String hashedPasswordInput = DigestUtils.sha256hex(password_input); 
+				//this library function hashes the password using sha256
+				
+				String retrievedPasswordHash = loginRS.getString("password"); //obtained from SQL query
+			
+				//compare stored password and password from imput
+				if(retrievedPasswordHash.equals(hashedPasswordInput)){
+					return; //passwords match, valid login
+				}
+				
+				return; //passwords do not match
+			}
+			
+		} catch(Exception e){
+			out.print(ex);
+			out.print("Exception during login attempt");
+		}
+		
+	%>
+
+
