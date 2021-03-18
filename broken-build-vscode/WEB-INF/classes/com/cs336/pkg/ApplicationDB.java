@@ -13,7 +13,7 @@ public class ApplicationDB {
 	public Connection getConnection(){
 		
 		//Create a connection string
-		String connectionUrl = "jdbc:mysql://localhost:3306/BarBeerDrinkerSample";
+		String connectionUrl = "jdbc:mysql://localhost:3306/auction";
 		Connection connection = null;
 		System.out.println("Got here");
 		
@@ -30,6 +30,7 @@ public class ApplicationDB {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		try {
 			//Create a connection to your DB
 			connection = DriverManager.getConnection(connectionUrl,"root", "root");
