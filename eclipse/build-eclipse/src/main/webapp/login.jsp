@@ -11,6 +11,8 @@
     <title>Login Check</title>
 </head>
 <body>
+	<a href="index.jsp">Return to login</a>
+	<hr><br>
 	<%
 		List<String> list = new ArrayList<String>();
 
