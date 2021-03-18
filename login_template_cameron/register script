@@ -1,0 +1,51 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1" import="com.cs336.pkg.*"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+<% page import="org.apache.commons.code.digest.DigestUtils"%>
+
+	<%
+		try{
+			
+			ApplicationDB db = new ApplicationDB();
+			Connection newConn = DriverManager.getConnection();
+			
+			//"username" and "password" would be the names of the HTML elements from the login form
+			String usernameInput = request.getParameter("username");
+			String passwordInput = request.getParameter("password");
+			String retypedPassword = request.getParameter("passwordRetyped");
+			
+			
+			if(!passwordInput.equals(retypedPassword)){
+				
+				//password does not match retyped password
+				return;
+			}
+			
+			
+			/*
+			script required here to generate userID number
+			*/
+			
+			
+			//encrypt the password
+			String encryptedPassword = DigestUtils.sha256hex(passwordInput);
+			
+			//change the query to the correct database field names
+			PreparedStatement createAccount = newConn.prepareStatement("INSERT INTO users(userID, username, password) VALUES(?,?,?)");
+			createAccount.setString(1, userID);
+			createAccount.setString(2, usernameInput);
+			createAccount.setString(3, encryptedPassword);
+			
+			createAccount.executeInsert();
+			
+			newConn.close();
+			
+			
+		} catch(Exception e){
+			out.println(e);
+			out.println("Exception during account creation");
+		}
+	
+	
+	%>
