@@ -1,5 +1,10 @@
 USE auction;
 
+DELETE FROM users
+WHERE user_id > 0;
+
+ALTER TABLE users AUTO_INCREMENT = 1;
+
 INSERT INTO users (username, password) VALUES ('forename', 'surname');
 INSERT INTO users (username, password) VALUES ('username', 'password');
 INSERT INTO users (username, password) VALUES ('jakobs', 'b0rderl2nds3');
