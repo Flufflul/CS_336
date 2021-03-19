@@ -7,6 +7,6 @@
 <title>CS 336: Home</title>
 </head>
 <body>
-	
+	<p>Hello</p>
 </body>
 </html>
