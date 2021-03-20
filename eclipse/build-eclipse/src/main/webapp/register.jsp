@@ -1,55 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" import="com.cs336.pkg.*"%>
+    pageEncoding="ISO-8859-1" import="com.cs336.pkg.*"%>
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
-<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*" %>
 
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Login Check</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>CS 336: Register</title>
 </head>
+	
 <body>
-	<a href="register-page.jsp">Return to register</a>
-	<hr><br>
-	<%
-		List<String> list = new ArrayList<String>();
 
-		try {
+	<div class="register-widget" style="font-family: sans-serif; padding-left: 10px; border-left: 5px solid blue;">
+		<h2>Register</h2>
+		<form method="POST" action="register-check.jsp">
+			<table>
+				<tr>
+					<td><b>Username:</b></td>
+					<td><input type="text" name="username"></td>
+				</tr>
+				<tr>
+					<td><b>Password:</b></td>
+					<td><input type="password" name="password"></td>
+				</tr>
+			</table>
+			<input type="submit" value="Register account">
+		</form>
+		<br>
+		<a href="login.jsp">Already have an account? Login</a>
+	</div>
 
-			//Get the database connection
-			ApplicationDB db = new ApplicationDB();	
-			Connection con = db.getConnection();	
-			
-			//Create a SQL statement
-			Statement stmt = con.createStatement(); 
-			String id = request.getParameter("username"); 
-            String pw = request.getParameter("password"); 
-            out.println("<p>After POST. id: " + id + ", pw: " + pw + "</p>");
-			String str = "SELECT * FROM users WHERE username = '"+ id +"'";
-            out.println("<p>Query: " + str + "</p>");
-			ResultSet accounts = stmt.executeQuery(str);
-            out.println("<p>Executed query</p>");
-
-            out.print("<h1>");
-            if (!accounts.next()) {
-            	String newAcc = "INSERT INTO users (username, password) VALUES ('"+ id +"','"+ pw +"');";
-            	stmt.executeUpdate(newAcc);
-            	
-            	out.println("Account registered!");
-            }
-            else {
-            	out.println("Account already exists.");
-            }
-            out.print("</h1>");
-            
-			//close the connection.
-			con.close();
-
-		} catch (Exception e) {
-            out.print(e);
-		}
-	%>
+	<br>
+	
 </body>
 </html>
