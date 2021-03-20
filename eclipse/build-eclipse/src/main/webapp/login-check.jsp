@@ -14,8 +14,6 @@
 	<a href="login.jsp">Return to login</a>
 	<hr><br>
 	<%
-		List<String> list = new ArrayList<String>();
-
 		try {
 
 			//Get the database connection
@@ -34,7 +32,32 @@
 
             out.print("<h1>");
             if (!accounts.next()) { out.println("No such account."); }
-            else if (accounts.getString("password").equals(pw)) { response.sendRedirect("profile.jsp"); }
+            else if (accounts.getString("password").equals(pw)) { 
+            	session.setAttribute("user", id);
+            	
+            	String uid = accounts.getString("user_id");
+            	session.setAttribute("user_id", uid);
+            
+            	String qry = "SELECT * FROM admin_staff WHERE user_id = "+ uid;
+            	ResultSet temp = stmt.executeQuery(qry);
+            	if (temp.next()) { 
+            		session.setAttribute("priv", "admin_staff");
+            	}
+            	
+            	qry = "SELECT * FROM customer_rep WHERE user_id = "+ uid;
+            	temp = stmt.executeQuery(qry);
+            	if (temp.next()) {
+            		session.setAttribute("priv", "customer_rep");
+            	}
+            	
+            	if (session.getAttribute("priv") == null) { 
+            		session.setAttribute("priv", "end_user"); 
+            	}
+            	
+            	out.print("Welcome, " + id);
+            	
+            	response.sendRedirect("profile.jsp"); 
+            	}
             else { out.println("Incorrect password."); }
             out.print("</h1>");
             

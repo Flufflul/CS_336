@@ -14,8 +14,6 @@
 	<a href="register.jsp">Return to register</a>
 	<hr><br>
 	<%
-		List<String> list = new ArrayList<String>();
-
 		try {
 
 			//Get the database connection
