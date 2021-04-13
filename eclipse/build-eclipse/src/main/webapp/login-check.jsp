@@ -25,7 +25,7 @@
 			String id = request.getParameter("username"); 
             String pw = request.getParameter("password"); 
             // out.println("<p>After POST. id: " + id + ", pw: " + pw + "</p>");
-			String str = "SELECT * FROM users WHERE username = '"+ id +"'";
+			String str = "SELECT * FROM Users WHERE username = '"+ id +"'";
             // out.println("<p>Query: " + str + "</p>");
 			ResultSet accounts = stmt.executeQuery(str);
             // out.println("<p>Executed query</p>");
@@ -35,16 +35,16 @@
             else if (accounts.getString("password").equals(pw)) { 
             	session.setAttribute("user", id);
             	
-            	String uid = accounts.getString("user_id");
+            	String uid = accounts.getString("username");
             	session.setAttribute("user_id", uid);
             
-            	String qry = "SELECT * FROM admin_staff WHERE user_id = "+ uid;
+            	String qry = "SELECT * FROM admin_staff WHERE admin_name = '"+ uid + "'";
             	ResultSet temp = stmt.executeQuery(qry);
             	if (temp.next()) { 
             		session.setAttribute("priv", "admin_staff");
             	}
             	
-            	qry = "SELECT * FROM customer_rep WHERE user_id = "+ uid;
+            	qry = "SELECT * FROM customer_rep WHERE rep_name = '"+ uid + "'";
             	temp = stmt.executeQuery(qry);
             	if (temp.next()) {
             		session.setAttribute("priv", "customer_rep");
