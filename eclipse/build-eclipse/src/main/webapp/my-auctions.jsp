@@ -12,6 +12,9 @@
 </head>
 
 <body>
+<a href='profile.jsp'>Back</a>
+<hr><br>
+
 	<!-- 
 		Goals:
 		> List all 'auctions' (not bids) hosted by user
