@@ -18,7 +18,6 @@
 		Connection con = db.getConnection();
 		Statement stmt = con.createStatement();
 		
-		String uid = (String) session.getAttribute("user_id");
 		String username = (String) session.getAttribute("user");
 		String privileges = (String) session.getAttribute("priv");
 				
@@ -40,10 +39,13 @@
 			out.print("privileges.</h3>");
 		}
 		
+		db.closeConnection(con);
 	}
 	catch (Exception e) {
 		out.print(e);
 	}
 	%>
+	
+	<a href='my-auctions.jsp'>Your auctions</a>
 </body>
 </html>
