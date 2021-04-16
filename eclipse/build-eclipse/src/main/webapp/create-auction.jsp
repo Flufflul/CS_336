@@ -32,12 +32,12 @@
 	out.print("<select name='items' id='items'>");
 	while (items.next()) {
 		String itemName = items.getString("model_name");
-		out.print("<option value='"+itemName+"'"+itemName+"</option>");
+		out.print("<option value='"+itemName+"'>"+itemName+"</option>");
 	}
 	out.print("</select>");
 	
 	
-	
+	db.closeConnection(con);
 %>
 </body>
 

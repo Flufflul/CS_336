@@ -17,6 +17,7 @@
 		> List all 'auctions' (not bids) hosted by user
 		> Link to each auction
 	 -->
+	<h1><a href='create-auction.jsp'>Create auction</a></h1>
 	
 	<%
 		try {
