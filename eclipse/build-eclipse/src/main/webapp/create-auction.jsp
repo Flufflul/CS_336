@@ -33,7 +33,8 @@
 		winner 
 	*/
 	out.print("<form>");
-	out.print("<table style='width:50%'>");
+	out.print("<table>");
+	
 	
 	// List of all items
 	out.print("<tr>");
@@ -41,10 +42,11 @@
 	qry = "SELECT * FROM items";
 	ResultSet items = stmt.executeQuery(qry);
 	
-	out.print("<td><label for='items'>Item</label></td>");
+	out.print("<td style='text-align:right'><label for='items'>Item</label></td>");
 	
 	out.print("<td><select name='items' id='items'>");
 	
+	out.print("<option value=''></option>");
 	while (items.next()) {
 		String itemName = items.getString("model_name");
 		out.print("<option value='"+itemName+"'>"+itemName+"</option>");
@@ -57,11 +59,39 @@
 	// Set time limit
 	out.print("<tr>");
 	
-	out.print("<td><label for='expires'>Expires</label></td>");
-	out.print("<td><input type='date'/></td>");
+	out.print("<td style='text-align:right'><label for='expires'>Expires</label></td>");
+	out.print("<td><input type='date'/><input type='time'></td>");
 	
 	out.print("</tr>");
-			
+	
+	
+	// Set starting price
+	out.print("<tr>");
+	
+	out.print("<td style='text-align:right'><label for='start-price'>Base price</label></td>");
+	out.print("<td><input type='number' placeholder='0'/></td>");
+	
+	out.print("</tr>");
+	
+	
+	// Set (hidden) minimum threshold for auction
+	out.print("<tr>");
+	
+	out.print("<td style='text-align:right'><label for='hidden-price'>Minimum bid threshold</label></td>");
+	out.print("<td><input type='number' placeholder='0'/></td>");
+	
+	out.print("</tr>");
+	
+	
+	// Set buyout price
+	out.print("<tr>");
+	
+	out.print("<td style='text-align:right'><label for='buyout-price'>Buyout price</label></td>");
+	out.print("<td><input type='number' placeholder='0'/></td>");
+	
+	out.print("</tr>");
+
+	
 	out.print("</form>");
 	
 	db.closeConnection(con);
