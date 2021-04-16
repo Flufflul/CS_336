@@ -11,7 +11,7 @@
 <title>CS 336: My Auctions</title>
 </head>
 
-<body>
+<body style='font-family: sans-serif'>
 <a href='profile.jsp'>Back</a>
 <hr><br>
 
