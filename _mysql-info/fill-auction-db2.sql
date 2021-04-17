@@ -1,24 +1,16 @@
 USE auction;
 
-/*DELETE FROM users
-WHERE username NOT NULL;*/
+/*DELETE FROM users WHERE username NOT NULL;*/
 
 /*ALTER TABLE users AUTO_INCREMENT = 1;*/
 
 /*Users*/
-INSERT INTO users (username, password, email) VALUES ('forename', 'surname', 'fs@gmail.com');
-INSERT INTO users (username, password, email) VALUES ('username', 'password', 'up@gmail.com');
-INSERT INTO users (username, password, email) VALUES ('jakobs', 'b0rderl2nds3', 'jb@gmail.com');
-INSERT INTO users (username, password, email) VALUES ('pink', 'floyd', 'dgilmour@gmail.com');
-INSERT INTO users (username, password, email) VALUES ('m2m2', 'asdflkjh', 'm2m2@gmail.com');
-INSERT INTO users (username, password, email) VALUES ('justa', 'normalperson', 'nisemono@gmail.com');
-INSERT INTO users (username, password, email) VALUES ('fake', 'user', 'fake@gmail.com');
-INSERT INTO users (username, password, email) VALUES ('notafake', 'user', 'notfake@gmail.com');
-INSERT INTO users (username, password, email) VALUES ('not a real person', 'password', 'notreal2@gmail.com');
-INSERT INTO users (username, password, email) VALUES ('also not real', 'password', 'notreal@gmail.com');
-INSERT INTO users (username, password, email) VALUES ('heyihavethesame', 'password', 'hp@gmail.com');
-INSERT INTO users (username, password, email) VALUES ('mynameismypassword', 'mynameismypassword', 'bp@gmail.com');
-INSERT INTO users (username, password, email) VALUES ('iNeedHelp', 'helphelphelp', 'helpme@gmail.com');
+INSERT INTO users (username, password, email) VALUES 
+('username', 'password', 'user@email.com'),
+('user','pass','up@fmail.com'),
+('me','myself','i@gmail.com'),
+('fakeperson','abc123','badpass@mail.com'),
+('iNeedHelp', 'helphelphelp', 'helpme@gmail.com');
 
 /*  Buyers  */
 INSERT INTO users (username, password, email) VALUES ('thief', 'thiefPW', 'thief@gmail.com');
@@ -47,6 +39,7 @@ INSERT INTO sellers (seller_id) VALUES('joeperry');
 INSERT INTO sellers(seller_id) VALUES('NotCameron');
 INSERT INTO sellers (seller_id) VALUES ('thief');
 
+
 /*Administrators and representatives*/
 INSERT INTO users (username, password, email) VALUES ('rep1', 'reppw', 'rep1@gmail.com');
 INSERT INTO Customer_Rep (rep_name) VALUES ((SELECT u.username FROM users u WHERE username = 'rep1'));
@@ -62,38 +55,44 @@ INSERT INTO Admin_Staff (admin_name) VALUES ((SELECT u.username FROM users u WHE
 
 
 /*    Items    */
-INSERT INTO Items (item_id, model_name, manufacturer, num_strings) VALUES (310970, 'Fender Squier 70s Classic Vibe', 'Fender', 6);
-INSERT INTO Items (item_id, model_name, manufacturer, num_strings) VALUES (32010, 'Kenny Hickey Signature', 'Schecter', 6);
-INSERT INTO Items (item_id, model_name, manufacturer, num_strings) VALUES (191959, '1959 Les Paul', 'Gibson', 6);
-INSERT INTO Items (item_id, model_name, manufacturer, num_strings) VALUES (132018, 'Marty Friedman Signature', 'Jackson', 6);
-INSERT INTO Items (item_id, model_name, manufacturer, num_strings) VALUES (742019, 'RGA742FM', 'Ibanez', 7);
-INSERT INTO Items (item_id, model_name, manufacturer, num_strings) VALUES (11600, 'APX600', 'Yamaha', 6);
-INSERT INTO Items (item_id, model_name, manufacturer, num_strings) VALUES (101996, 'JF30', 'Guild', 6);
-INSERT INTO Items (item_id, model_name, manufacturer, num_strings) VALUES (100827, 'AWN100', 'Giannini', 6);
-INSERT INTO Items (item_id, model_name, manufacturer, num_strings) VALUES (111996, 'D50', 'Guild', 6);
-INSERT INTO Items (item_id, model_name, manufacturer, num_strings) VALUES (209000, 'Omen-4 Bass', 'Schecter', 4);
-INSERT INTO Items (item_id, model_name, manufacturer, num_strings) VALUES (107600, 'Johnny Christ 5 Bass', 'Schecter', 5);
-INSERT INTO Items (item_id, model_name, manufacturer, num_strings) VALUES (720042, 'Frank Bello J-4', 'ESP', 4);
+INSERT INTO Items (item_id, model_name, manufacturer, num_strings) VALUES 
+(null, 'Fender Squier 70s Classic Vibe', 'Fender', 6),			# 1 <= 310970
+(null, 'Kenny Hickey Signature', 'Schecter', 6),				# 2 <= 32010
+(null, '1959 Les Paul', 'Gibson', 6),							# 3 <= 191959
+(null, 'Marty Friedman Signature', 'Jackson', 6),				# 4 <= 132018
+(null, 'RGA742FM', 'Ibanez', 7),								# 5 <= 742019
+(null, 'APX600', 'Yamaha', 6),									# 6 <= 11600
+(null, 'JF30', 'Guild', 6),										# 7 <= 101996
+(null, 'AWN100', 'Giannini', 6),								# 8 <= 100827
+(null, 'D50', 'Guild', 6),										# 9 <= 111996
+(null, 'Omen-4 Bass', 'Schecter', 4),							# 10 <= 209000
+(null, 'Johnny Christ 5 Bass', 'Schecter', 5),					# 11 <= 107600
+(null, 'Frank Bello J-4', 'ESP', 4);							# 12 <= 720042
+
 
 /*    Electric guitars and basses   */
-INSERT INTO Electric_Guitar(item_id, pickup_config) VALUES (310970, 'SSS');
-INSERT INTO Electric_Guitar(item_id, pickup_config) VALUES (32010, 'HH');
-INSERT INTO Electric_Guitar(item_id, pickup_config) VALUES (191959, 'HH');
-INSERT INTO Electric_Guitar(item_id, pickup_config) VALUES (132018, 'HH');
-INSERT INTO Electric_Guitar(item_id, pickup_config) VALUES (742019, 'HH');
-INSERT INTO Electric_Guitar(item_id, pickup_config) VALUES (209000, 'HH');
-INSERT INTO Electric_Guitar(item_id, pickup_config) VALUES (107600, 'HS');
-INSERT INTO Electric_Guitar(item_id, pickup_config) VALUES (720042, 'HS');
-
+INSERT INTO Electric_Guitar(item_id, pickup_config) VALUES 
+(1, 'SSS'),				# Fender Squier 70s Classic Vibe+
+(2, 'HH'),				# Kenny Hickey Signature
+(3, 'HH'),				# 1959 Les Paul
+(4, 'HH'),				# Marty Friedman Signature
+(5, 'HH'),				# RGA742FM
+(10, 'HH'),				# Omen-4 Bass
+(11, 'HS'),				# Johnny Christ 5 Bass
+(12, 'HS');				# Frank Bello J-4
 
 
 /*     Acoustics    */
-INSERT INTO Acoustic_Guitar(item_id, is_classical) VALUES (101996, 0);
-INSERT INTO Acoustic_Guitar(item_id, is_classical) VALUES (111996, 0);
-INSERT INTO Acoustic_Guitar(item_id, is_classical) VALUES (100827, 1);
+INSERT INTO Acoustic_Guitar(item_id, is_classical) VALUES 
+(7, 0), 				# JF30
+(8, 0),					# D50
+(9, 1);					# AWN100
+
 
 /*     Acoustic electrics    */
-INSERT INTO Acoustic_Electric_Guitar(item_id, pickup_type, includes_tuner) VALUES (11600, 'SRT Piezo', 0);
+INSERT INTO Acoustic_Electric_Guitar(item_id, pickup_type, includes_tuner) VALUES 
+(6, 'SRT Piezo', 0);	# APX600
+
 
 /*
 AUCTIONS
@@ -101,26 +100,40 @@ Datetime format:   YYYY-MM-DD HH:MM:SS
 the time section is in military time, to write 2:30pm, you write 14:30:00
 Example:  2021-09-21 15:30:00    =  3:30pm and 0 seconds, on september 21st, 2021 
 */
-INSERT INTO makes_auction VALUES 
-('jerryCantrell', 111996, '2021-01-28 03:03:10', '2021-4-28 14:00:00', 500.00, 450.00, 550.00, 10, 0, ''),
-('joeperry', 191959, '2021-01-28 03:03:10', '2021-2-28 15:00:00', 50000.00, 45000.00, 55000.00, 100, 55000.00, 'Slash'), /*tuple where someone used 'buy now' feature*/
-('thief', 101996, '2021-04-10 03:03:10', '2021-5-28 15:00:00', 1000.00, 950.00, 1200.00, 100, 1100.00, ''),
-('jerryCantrell', 100827, '2021-3-20 03:01:00', '2021-5-10 15:01:00', 900, 850, 940, 50, 1000, '');
+INSERT INTO auction_info VALUES
+(null, '2021-01-28 03:03:10', '2021-4-28 14:00:00', 500.00, 450.00, 550.00, 10, 0, ''),
+(null, '2021-01-28 03:03:10', '2021-2-28 15:00:00', 50000.00, 45000.00, 55000.00, 100, 55000.00, 'Slash'),
+(null, '2021-04-10 03:03:10', '2021-5-28 15:00:00', 1000.00, 950.00, 1200.00, 100, 1100.00, ''),
+(null, '2021-3-20 03:01:00', '2021-5-10 15:01:00', 900, 1500, 2000, 50, 1100, '');
+
+# ('jerryCantrell', 9, '2021-01-28 03:03:10', '2021-4-28 14:00:00', 500.00, 450.00, 550.00, 10, 0, ''),
+# ('joeperry', 3, '2021-01-28 03:03:10', '2021-2-28 15:00:00', 50000.00, 45000.00, 55000.00, 100, 55000.00, 'Slash'), /*tuple where someone used 'buy now' feature*/
+# ('thief', 7, '2021-04-10 03:03:10', '2021-5-28 15:00:00', 1000.00, 950.00, 1200.00, 100, 1100.00, ''),
+# ('jerryCantrell', 8, '2021-3-20 03:01:00', '2021-5-10 15:01:00', 900, 850, 940, 50, 1000, '');
+
+INSERT INTO auctions VALUES 
+('jerryCantrell', 9, 1),
+('joeperry', 3, 2),
+('thief', 7, 3),
+('jerryCantrell', 8, 4);
+
 /* (seller_username (called seller_id), item_id, start time, end time/expires, starting price, hidden min price, buy now price, min bid increment, highest current bid, winner name(winner name is not foreign key) )*/
 
+
 INSERT INTO makes_bid VALUES
-('Slash', 'joeperry', 191959, 0, 55000, 0, 55000), 
-('NotCameron', 'thief', 101996, 1, 1100, 1200, 1000),
-('NotCameron', 'jerryCantrell', 100827, 1, 1100, 1150, 900);
+('Slash', 'joeperry', 3, 2, '2021-02-20 00:00:00', 55000, false, 0, 0),
+('NotCameron', 'thief', 7, 3, '2021-04-20 10:00:00', 900, true, 1000, 100),
+('NotCameron', 'jerryCantrell', 8, 4, '2021-03-20 05:00:00', 1100, true, 1150, 50);
 /* (buyer, seller, item id, is auto bid, bid, bid max, price)
 	I forgot what the 'price' attribute in this table is for so change it if it doesn't match whatever it refers to
 */
 
 
 /*Customer support tickets*/
-INSERT INTO customer_support(user_id, rep_id, ticket_no, question, answer) VALUES('iNeedHelp', 'secretHackerman', 12345, 'Thief is selling a stolen acoustic guitar', 'Thank you for the report');
-INSERT INTO customer_support(user_id, rep_id, ticket_no, question, answer) VALUES('iNeedHelp', 'rep1', 128010, 'How do i default on a bid', '');
-INSERT INTO customer_support(user_id, rep_id, ticket_no, question, answer) VALUES('iNeedHelp', 'rep1', 543632, 'How do I turn autobid off', '');
-INSERT INTO customer_support(user_id, rep_id, ticket_no, question, answer) VALUES('jerryCantrell', 'rep1', 10432, 'My auction for my JF30 disappeared', 'I restored the auction. Someone accidentally removed it');
+INSERT INTO customer_support(ticket_no, end_user, question, answer) VALUES
+(null, 'secretHackerman', 'Thief is selling a stolen acoustic guitar', 'Thank you for the report'),
+(null, 'rep1', 'How do i default on a bid', ''),
+(null, 'rep1', 'How do I turn autobid off', ''),
+(null, 'rep1', 'My auction for my JF30 disappeared', 'I restored the auction. Someone accidentally removed it');
 
 

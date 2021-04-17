@@ -44,7 +44,7 @@
 		
 		out.print("<td style='text-align:right'><label for='items'>Item</label></td>");
 		
-		out.print("<td><select name='items' id='items'>");
+		out.print("<td><select name='item'>");
 		
 		out.print("<option value=''></option>");
 		while (items.next()) {
@@ -53,6 +53,8 @@
 		}
 		out.print("</select></td>");
 		
+		out.print("<td><a href='add-item.jsp'>Item not here? Add one.</a></td>");
+		
 		out.print("</tr>");
 		
 		
@@ -60,7 +62,7 @@
 		out.print("<tr>");
 		
 		out.print("<td style='text-align:right'><label for='expires'>Expires</label></td>");
-		out.print("<td><input type='date'/><input type='time'></td>");
+		out.print("<td><input type='date' name='exp_date'/><input type='time' name='exp_time'></td>");
 		
 		out.print("</tr>");
 		
@@ -69,7 +71,7 @@
 		out.print("<tr>");
 		
 		out.print("<td style='text-align:right'><label for='start-price'>Base price $</label></td>");
-		out.print("<td><input type='number' placeholder='0'/></td>");
+		out.print("<td><input type='number' name='start_price' placeholder='0'/></td>");
 		
 		out.print("</tr>");
 		
@@ -78,7 +80,7 @@
 		out.print("<tr>");
 		
 		out.print("<td style='text-align:right'><label for='hidden-price'>Minimum bid threshold $</label></td>");
-		out.print("<td><input type='number' placeholder='0'/></td>");
+		out.print("<td><input type='number' name='hidden_price' placeholder='0'/></td>");
 		
 		out.print("</tr>");
 		
@@ -87,7 +89,7 @@
 		out.print("<tr>");
 		
 		out.print("<td style='text-align:right'><label for='buyout-price'>Buyout price $</label></td>");
-		out.print("<td><input type='number' placeholder='0'/></td>");
+		out.print("<td><input type='number' name='buyout_price' placeholder='0'/></td>");
 		
 		out.print("</tr>");
 		
@@ -96,7 +98,7 @@
 		out.print("<tr>");
 		
 		out.print("<td style='text-align:right'><label for='min-incr'>Minimum increment $</label></td>");
-		out.print("<td><input type='number' placeholder='0'/></td>");
+		out.print("<td><input type='number' name='min_incr' placeholder='0'/></td>");
 		
 		out.print("</tr>");
 		

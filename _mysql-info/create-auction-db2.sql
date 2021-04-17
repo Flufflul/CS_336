@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS Users(
     username varchar(63) not null,
     password varchar(64) not null,
     email varchar(100) not null,
+    deleted bool DEFAULT false,
     
     constraint primary key(username)
 ) engine=innodb;
@@ -43,7 +44,7 @@ CREATE TABLE IF NOT EXISTS Buyers(
 ) engine=innodb;
 
 CREATE TABLE IF NOT EXISTS Items(
-    item_id int not null,
+    item_id int not null auto_increment,
     model_name varchar(127) not null,
     manufacturer varchar(20) not null,
 	num_Strings int not null,
@@ -66,7 +67,7 @@ CREATE TABLE IF NOT EXISTS Electric_Guitar(
 
 CREATE TABLE IF NOT EXISTS Acoustic_Guitar(
 	item_id int not null,
-	is_classical bool not null,  
+	is_classical bool not null,
 
 	constraint primary key(item_id),
 	constraint foreign key(item_id) references Items(item_id)
@@ -83,48 +84,60 @@ CREATE TABLE IF NOT EXISTS Acoustic_Electric_Guitar(
 ) engine=innodb;
 
 
-CREATE TABLE IF NOT EXISTS Makes_Bid(
-	buyer_id varchar(63) not null,
-    seller_id varchar(63) not null,
-    item_id int not null,
-    
-    is_auto_bid bool,
-    bid decimal(7,2),
-    bid_max decimal(7,2),
-	price decimal(7,2),
-    
-    constraint primary key(buyer_id, item_id),
-    constraint foreign key(buyer_id) references Buyers(buyer_id),
-    constraint foreign key(item_id) references Items(item_id),
-    constraint foreign key(seller_id) references Sellers(seller_id)
-) engine=innodb;
-
-
 /*
 Datetime format:   YYYY-MM-DD HH:MM:SS
 the time section is in military time, to write 2:30pm, you write 14:30:00
 Example:  2021-09-21 15:30:00    =  3:30pm and 0 seconds, on september 21st, 2021 
 */
-CREATE TABLE IF NOT EXISTS Makes_Auction(
-    seller_id varchar(63) not null,
-    item_id int not null,
-    
+CREATE TABLE IF NOT EXISTS Auction_Info(
+	auction_id int not null auto_increment,
+
 	start_time datetime not null,
 	expires datetime not null,
 	
-    starting_price decimal(7,2),
-    hidden_price decimal(7,2),
-	buy_now_price decimal(7,2),
+    starting_price float,
+    hidden_price float,
+	buy_now_price float,
 	
-	min_increment decimal(7,2),
-	highest_current_bid decimal(7, 2),
+	min_increment float,
+	highest_current_bid float,
 	
 	winner varchar(63),
     
-    constraint primary key(seller_id, item_id),
-    constraint foreign key(seller_id) references sellers(seller_id),
-    constraint foreign key(item_id) references Items(item_id)
+    constraint primary key(auction_id)
 ) engine=innodb;
+
+CREATE TABLE IF NOT EXISTS Auctions(
+    seller_id varchar(63) not null,
+    item_id int not null,
+    auction_id int not null,
+    
+    constraint primary key(seller_id, item_id, auction_id),
+    constraint foreign key(seller_id) references sellers(seller_id),
+    constraint foreign key(item_id) references Items(item_id),
+    constraint foreign key(auction_id) references Auction_Info(auction_id)
+) engine=innodb;
+
+
+CREATE TABLE IF NOT EXISTS Makes_Bid(
+	buyer_id varchar(63) not null,
+    seller_id varchar(63) not null,
+    item_id int not null,
+    auction_id int not null,
+    bid_time datetime not null,
+    
+	bid float,
+
+    is_auto_bid bool,
+    bid_max float,
+	auto_bid_increment float,
+    
+    constraint primary key(buyer_id, seller_id, item_id, auction_id, bid_time),
+    constraint foreign key(buyer_id) references Buyers(buyer_id),
+    constraint foreign key(seller_id, item_id, auction_id) references Auctions(seller_id, item_id, auction_id),
+    constraint foreign key(seller_id) references Sellers(seller_id)
+) engine=innodb;
+
 
 CREATE TABLE IF NOT EXISTS Buyer_Alert(
 	buyer_id varchar(63) not null,
@@ -136,14 +149,11 @@ CREATE TABLE IF NOT EXISTS Buyer_Alert(
 ) engine=innodb;
 
 CREATE TABLE IF NOT EXISTS Customer_Support(
-	user_id varchar(63) not null,
-    rep_id varchar(63) not null,
+    ticket_no int not null auto_increment,
     
-    ticket_no int not null,
-    question varchar(255),
-	answer varchar(255),
+    end_user varchar(63),
+    question varchar(500),
+	answer varchar(500),
     
-    constraint primary key(user_id, rep_id, ticket_no),
-    constraint foreign key(user_id) references Users(username),
-    constraint foreign key(rep_id) references Customer_Rep(rep_name)
+    constraint primary key(ticket_no)
 ) engine=innodb;
