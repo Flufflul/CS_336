@@ -30,7 +30,6 @@
 	String minIncrement = request.getParameter("min_incr");			// optional
 	
 	// "item": "" means no item selected
-	Date test = new Date();
 	
 	// Connect to DB
 	ApplicationDB db = new ApplicationDB();	
