@@ -8,29 +8,32 @@
 <meta charset="ISO-8859-1">
 
 <title> Customer Support </title>
-<h1>Customer Support</h1>
+
 
 </head>
 
 <body>
-	<!---<a href='logout.jsp'>Logout</a>--->
+	<a href="profile.jsp">profile</a>
+	<br><br>
+	<a href='logout.jsp'>Logout</a>
+	<h1>Customer Support</h1>
+	
 	<hr><br>
 	<p>Need help? Contact customer support</p>
 	
 	<form method = "post" action = "sendHelpTicket.jsp" id="helpForm"> <!---send help ticket--->
+		<table>
 		<tr>
 		<td>Username: </td><td><input type="text" name="username"></td>
 		</tr>
-		
-		<tr>
-		<td>Email address: </td><td><input type="text" name="emailAddr"></td>
-		</tr>
+		</table>
 		
 		<br>
 		<textarea rows="5" cols="51" name="reason" form="helpForm">
-		Enter detail here
 		</textarea>
-	<input type = "submit" value = "Create Rep Account">
+		<br>
+		<br>
+	<input type = "submit" value = "Send">
 	</form>
 	
 	
