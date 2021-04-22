@@ -63,8 +63,11 @@
 		
 		out.print("<td style='text-align:right'><label for='expires'>Expires</label></td>");
 		out.print("<td><input type='date' name='exp_date'/><input type='time' name='exp_time'></td>");
-		
+
 		out.print("</tr>");
+		
+		bool expFail = session.getAttribute("expFail");
+		if ()
 		
 		
 		// Set starting price

@@ -89,6 +89,8 @@ Datetime format:   YYYY-MM-DD HH:MM:SS
 the time section is in military time, to write 2:30pm, you write 14:30:00
 Example:  2021-09-21 15:30:00    =  3:30pm and 0 seconds, on september 21st, 2021 
 */
+
+/*
 CREATE TABLE IF NOT EXISTS Auction_Info(
 	auction_id int not null auto_increment,
 
@@ -106,36 +108,46 @@ CREATE TABLE IF NOT EXISTS Auction_Info(
     
     constraint primary key(auction_id)
 ) engine=innodb;
+*/
 
 CREATE TABLE IF NOT EXISTS Auctions(
+	auction_id int not null auto_increment,
+    
     seller_id varchar(63) not null,
     item_id int not null,
-    auction_id int not null,
+
+	start_time datetime not null,
+	expires datetime not null,
+	
+    starting_price float,
+    hidden_price float,
+	buy_now_price float,
+	
+	min_increment float,
+	highest_current_bid float,
+	
+	winner varchar(63),
     
-    constraint primary key(seller_id, item_id, auction_id),
+    constraint primary key(auction_id),
     constraint foreign key(seller_id) references sellers(seller_id),
-    constraint foreign key(item_id) references Items(item_id),
-    constraint foreign key(auction_id) references Auction_Info(auction_id)
+    constraint foreign key(item_id) references Items(item_id)
 ) engine=innodb;
 
 
 CREATE TABLE IF NOT EXISTS Makes_Bid(
 	buyer_id varchar(63) not null,
-    seller_id varchar(63) not null,
-    item_id int not null,
     auction_id int not null,
     bid_time datetime not null,
     
 	bid float,
-
+    
     is_auto_bid bool,
     bid_max float,
 	auto_bid_increment float,
     
-    constraint primary key(buyer_id, seller_id, item_id, auction_id, bid_time),
+    constraint primary key(buyer_id, auction_id, bid_time),
     constraint foreign key(buyer_id) references Buyers(buyer_id),
-    constraint foreign key(seller_id, item_id, auction_id) references Auctions(seller_id, item_id, auction_id),
-    constraint foreign key(seller_id) references Sellers(seller_id)
+    constraint foreign key(auction_id) references Auctions(auction_id)
 ) engine=innodb;
 
 
