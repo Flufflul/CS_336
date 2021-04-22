@@ -54,22 +54,26 @@
 			out.print("<option value='"+itemID+"'>"+itemName+"</option>");
 		}
 		out.print("</select></td>");
-		
-		out.print("<td><a href='add-item.jsp'>Item not here? Add one.</a></td>");
+				
+		Object strItemFail = session.getAttribute("itemFail");
+		Boolean itemFail = (Boolean) strItemFail;
+		if (itemFail) { out.print("<td><p style='color:red;'>*Item is required.</p></td>"); }
 		
 		out.print("</tr>");
-		
+
+		out.print("<tr><td></td><td><a href='add-item.jsp'>Item not here? Add one.</a></td></tr>");
 		
 		// Set time limit
 		out.print("<tr>");
 		
 		out.print("<td style='text-align:right'><label for='expires'>Expires</label></td>");
 		out.print("<td><input type='date' name='exp_date'/><input type='time' name='exp_time'></td>");
+		
+		Object strExpFail = session.getAttribute("expFail"); 
+		Boolean expFail = (Boolean) strExpFail;
+		if (expFail) { out.print("<td><p style='color:red;'>*Expiration date (not time) is required.</p></td>"); }
 
 		out.print("</tr>");
-		
-		boolean expFail = Boolean.parseBoolean((String) session.getAttribute("expFail"));
-		if (expFail) { out.print("<tr><p style='color:red;'>*Expiration date (not time) is required.</p></tr>"); }
 		
 		// Set starting price
 		out.print("<tr>");

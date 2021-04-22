@@ -36,13 +36,15 @@
 		String minIncrement = request.getParameter("min_incr");			// optional
 				
 		boolean failed = false;
+		session.setAttribute("expFail", false);
+		session.setAttribute("itemFail", false);
 		
 		// AUCTION_INFO ORDER: 
 		// auction_id (null) <- auto, seller_id (varchar), item_id (int),
 		// starts (datetime) <- current_timestamp, expires (datetime), 
 		// startPrice (float), hiddenPrice (float), buyout (float), minIncr (float), 
 		// highestBid (float) <- calculated, winner (varchar) <- calculated
-		String qry_aucInfo = "INSERT INTO auction_info VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+		String qry_aucInfo = "INSERT INTO auctions VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 		aucInfo = con.prepareStatement(qry_aucInfo);
 
 		//1 auction_id -> auto incremented int
@@ -53,8 +55,14 @@
 		aucInfo.setString(2, username);
 		
 		//3 item_id -> itemname into item_id
-		int itemID = Integer.parseInt(strItemID);
-		aucInfo.setInt(3, itemID);
+		int itemID = -1;
+		if (strItemID.equals("")) {
+			session.setAttribute("itemFail", true);
+			failed = true;
+		} else {
+			itemID = Integer.parseInt(strItemID);
+			aucInfo.setInt(3, itemID);
+		}
 		
 		//4 starts -> always current datetime
 		java.util.Date date = new java.util.Date();
@@ -72,17 +80,17 @@
 		if (expDate.equals("")) {
 			session.setAttribute("expFail", true);
 			failed = true;
+		} else {
+			if (expTime.equals("")) { exp += "00:00"; }
+			else { exp += expTime; }
+			//out.print("exp: "+exp);
+			
+			d = df.parse(exp);
+			sql_expDate.setTime(d.getTime());
+			//out.print("expdatesql: "+sql_expDate);
+			
+			aucInfo.setTimestamp(5, sql_expDate);
 		}
-		
-		if (expTime.equals("")) { exp += "00:00"; }
-		else { exp += expTime; }
-		//out.print("exp: "+exp);
-		
-		d = df.parse(exp);
-		sql_expDate.setTime(d.getTime());
-		//out.print("expdatesql: "+sql_expDate);
-		
-		aucInfo.setTimestamp(5, sql_expDate);
 		
 		//6 "start_price"	: "" ok.   default 0
 		float sp = 0;
@@ -116,7 +124,7 @@
 		//11 winner -> null varchar
 		aucInfo.setNull(11, java.sql.Types.VARCHAR);
 		
-		
+		/*
 		out.print("<h2>"+strItemID+
 				" | "+expDate+
 				" | "+expTime+
@@ -135,11 +143,24 @@
 				" | "+bp+
 				" | "+mi+
 				"</h2>");
+		*/
 		
 		// if failed, return.
-		if (failed) {
-			response.sendRedirect("create-auction.jsp");
+		if (failed) { response.sendRedirect("create-auction.jsp"); }
+		
+		// check if user is a seller; if not, insert.
+		Statement check = con.createStatement();
+		String check_qry = "SELECT * FROM sellers s WHERE s.seller_id = '"+username+"'";
+		ResultSet check_rs = check.executeQuery(check_qry);
+		if (!check_rs.next()) {
+			check_qry = "INSERT INTO sellers VALUES ('"+username+"')";
+			check.executeUpdate(check_qry);
 		}
+		check.close();
+
+		aucInfo.executeUpdate();
+		
+		out.print("<h1>Auction has been created!</h1><a href='my-auctions.jsp'>Go back to My Auctions</a>");
 		
 	} catch (Exception e) {
 		out.print(e);
