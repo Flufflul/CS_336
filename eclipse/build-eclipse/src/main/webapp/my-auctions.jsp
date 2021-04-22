@@ -33,7 +33,12 @@
 			String uid = (String) session.getAttribute("user");
 			
 			// Query for auctions by user
-			String qry = "SELECT * FROM makes_auction ma INNER JOIN items it on it.item_id = ma.item_id WHERE seller_id = '" + uid + "'";
+			String qry = 
+				"SELECT * "+
+				"FROM auctions a "+
+				//"INNER JOIN auction_info ai ON a.auction_id = ai.auction_id "+
+				"INNER JOIN items i ON a.item_id = i.item_id "+ 
+				"WHERE seller_id = '"+ uid +"'";
 			ResultSet res = stmt.executeQuery(qry);
 			
 			// Process auctions as options
