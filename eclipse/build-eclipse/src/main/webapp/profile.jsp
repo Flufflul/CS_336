@@ -47,5 +47,8 @@
 	%>
 	
 	<a href='my-auctions.jsp'>Your auctions</a>
+	
+	
+	<br><br><br><br><a href='customerSupport_page.jsp'>Need help? Contact customer support</a>
 </body>
 </html>
