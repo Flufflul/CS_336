@@ -27,7 +27,7 @@
 		/* Parse and validate data */
 			
 		// item (model_name), exp_date, start_price, hidden_price, buyout_price, min_incr
-		String itemName 	= request.getParameter("item");				// mandatory
+		String strItemID	= request.getParameter("item");				// mandatory
 		String expDate		= request.getParameter("exp_date");			// mandatory
 		String expTime 		= request.getParameter("exp_time");			// optional
 		String startPrice 	= request.getParameter("start_price");		// optional
@@ -38,23 +38,31 @@
 		boolean failed = false;
 		
 		// AUCTION_INFO ORDER: 
-		// id (null) <- auto,
+		// auction_id (null) <- auto, seller_id (varchar), item_id (int),
 		// starts (datetime) <- current_timestamp, expires (datetime), 
 		// startPrice (float), hiddenPrice (float), buyout (float), minIncr (float), 
 		// highestBid (float) <- calculated, winner (varchar) <- calculated
-		String qry_aucInfo = "INSERT INTO auction_info VALUES (?,?,?,?,?,?,?,?,?)";
+		String qry_aucInfo = "INSERT INTO auction_info VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 		aucInfo = con.prepareStatement(qry_aucInfo);
 
-		//1 id -> auto incremented int
+		//1 auction_id -> auto incremented int
 		aucInfo.setNull(1, java.sql.Types.INTEGER);
 		
-		//2 starts -> always current datetime
+		//2 seller_id -> user_id
+		String username = (String) session.getAttribute("user_id");
+		aucInfo.setString(2, username);
+		
+		//3 item_id -> itemname into item_id
+		int itemID = Integer.parseInt(strItemID);
+		aucInfo.setInt(3, itemID);
+		
+		//4 starts -> always current datetime
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp sql_now = new java.sql.Timestamp(date.getTime());
-		aucInfo.setTimestamp(2, sql_now);
+		aucInfo.setTimestamp(4, sql_now);
 		
-		//3.1 expDate		: "" fail! no expiration date selected
-		//3.2 expTime		: "" ok.   default 00:00:00
+		//5.1 expDate		: "" fail! no expiration date selected
+		//5.2 expTime		: "" ok.   default 00:00:00
 		java.sql.Timestamp sql_expDate = new Timestamp(0);
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // date parser
@@ -74,56 +82,42 @@
 		sql_expDate.setTime(d.getTime());
 		//out.print("expdatesql: "+sql_expDate);
 		
-		aucInfo.setTimestamp(3, sql_expDate);
+		aucInfo.setTimestamp(5, sql_expDate);
 		
-		//4 "start_price"	: "" ok.   default 0
+		//6 "start_price"	: "" ok.   default 0
 		float sp = 0;
 		if (!startPrice.equals("")) { sp = Float.parseFloat(startPrice); }
-		aucInfo.setFloat(4, sp);
+		aucInfo.setFloat(6, sp);
 		
-		//5 "hidden_price"	: "" ok.   default nil
+		//7 "hidden_price"	: "" ok.   default nil
 		float hp = -1;
-		if (hiddenPrice.equals("")) { aucInfo.setNull(5, Types.FLOAT); }
+		if (hiddenPrice.equals("")) { aucInfo.setNull(7, Types.FLOAT); }
 		else {
 			hp = Float.parseFloat(hiddenPrice);
-			aucInfo.setFloat(5, hp);
+			aucInfo.setFloat(7, hp);
 		}
 		
-		//6 "buyout_price"	: "" ok.   default nil
+		//8 "buyout_price"	: "" ok.   default nil
 		float bp = -1;
-		if (buyoutPrice.equals("")) { aucInfo.setNull(6, java.sql.Types.FLOAT); }
+		if (buyoutPrice.equals("")) { aucInfo.setNull(8, java.sql.Types.FLOAT); }
 		else {
 			bp = Float.parseFloat(buyoutPrice);
-			aucInfo.setFloat(6, bp);
+			aucInfo.setFloat(8, bp);
 		}
 		
-		//7 "min_incr"		: "" ok.   default 1
+		//9 "min_incr"		: "" ok.   default 1
 		float mi = 1;
 		if (!minIncrement.equals("")) { mi = Float.parseFloat(minIncrement); }
-		aucInfo.setFloat(7, mi);
+		aucInfo.setFloat(9, mi);
 		
-		//8 highestBid -> null float
-		aucInfo.setNull(8, java.sql.Types.FLOAT);
+		//10 highestBid -> null float
+		aucInfo.setNull(10, java.sql.Types.FLOAT);
 		
-		//9 winner -> null varchar
-		aucInfo.setNull(9, java.sql.Types.VARCHAR);
-		
-		
-		// AUCTIONS ORDER: 
-		// seller_id (varchar), item_id (int), auction_id (int)
-		PreparedStatement auc = null;
-		String qry_auc = "INSERT INTO auctions VALUES (?,?,?)";
-		auc = con.prepareStatement(qry_auc);
-		
-		Statement stmt = null;
-		String qry = 	"SELECT seller_id, item_id, auction_id"+
-						"FROM sellers s"+
-						"INNER JOIN items i "+
-						"INNER JOIN auction_info a ";
-
+		//11 winner -> null varchar
+		aucInfo.setNull(11, java.sql.Types.VARCHAR);
 		
 		
-		out.print("<h2>"+itemName+
+		out.print("<h2>"+strItemID+
 				" | "+expDate+
 				" | "+expTime+
 				" | "+startPrice+
@@ -132,7 +126,9 @@
 				" | "+minIncrement+
 				"</h2>");
 		
-		out.print("<h2>"+sql_now+
+		out.print("<h2>"+username+
+				" | "+itemID+
+				" | "+sql_now+
 				" | "+sql_expDate+
 				" | "+sp+
 				" | "+hp+

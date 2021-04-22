@@ -49,7 +49,9 @@
 		out.print("<option value=''></option>");
 		while (items.next()) {
 			String itemName = items.getString("model_name");
-			out.print("<option value='"+itemName+"'>"+itemName+"</option>");
+			String itemID = items.getString("item_id");
+			
+			out.print("<option value='"+itemID+"'>"+itemName+"</option>");
 		}
 		out.print("</select></td>");
 		
@@ -66,9 +68,8 @@
 
 		out.print("</tr>");
 		
-		bool expFail = session.getAttribute("expFail");
-		if ()
-		
+		boolean expFail = Boolean.parseBoolean((String) session.getAttribute("expFail"));
+		if (expFail) { out.print("<tr><p style='color:red;'>*Expiration date (not time) is required.</p></tr>"); }
 		
 		// Set starting price
 		out.print("<tr>");
