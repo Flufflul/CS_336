@@ -61,6 +61,10 @@
             else { out.println("Incorrect password."); }
             out.print("</h1>");
             
+            //setup important session info
+            session.setAttribute("itemFail", false); 	//item is empty
+            session.setAttribute("expFail", false);		//expiration date is empty
+            
 			//close the connection.
 			con.close();
 
