@@ -65,6 +65,11 @@
             session.setAttribute("itemFail", false); 	//item is empty
             session.setAttribute("expFail", false);		//expiration date is empty
             
+        	session.setAttribute("modelNameFail", false);		//modelname is empty
+        	session.setAttribute("manufacturerFail", false);	//manufacturer is empty
+        	session.setAttribute("numStringsFail", false);		//numstrings is empty
+
+            
 			//close the connection.
 			con.close();
 
