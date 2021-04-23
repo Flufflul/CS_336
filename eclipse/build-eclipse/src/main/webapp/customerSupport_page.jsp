@@ -18,13 +18,15 @@
 	<a href='logout.jsp'>Logout</a>
 	<h1>Customer Support</h1>
 	
+	<a href='helpForum.jsp'>Check to see if your question was already answered</a>
 	<hr><br>
+	
 	<p>Need help? Contact customer support</p>
 	
 	<form method = "post" action = "sendHelpTicket.jsp" id="helpForm"> <!---send help ticket--->
 		<table>
 		<tr>
-		<td>Username: </td><td><input type="text" name="username"></td>
+		<td>Your Username: </td><td><input type="text" name="username"></td>
 		</tr>
 		</table>
 		

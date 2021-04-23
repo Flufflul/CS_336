@@ -33,11 +33,21 @@
 		
 		
 		//DELETE from following tables: auctions, auction_info and bids
-		
 		deleteFromAuct.setInt(1, illeg_auc);
 		deleteFromAuct.setString(2, auctioner_ID);	
 	
-		int numDeleted = deleteFromAuct.executeUpdate(); //deletes it from makes_auction
+		
+		////////////////Delete from the bids table BEFORE deleting the auction itself////////////////////////////
+		PreparedStatement deleteFromBids = conn.prepareStatement("DELETE FROM makes_bid WHERE auction_id = ?");
+		deleteFromBids.setInt(1, illeg_auc);
+		
+		deleteFromBids.executeUpdate();
+		
+		//If there are no bids for that auction or if the auction does not exist then this is probably still fine
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		
+		int numDeleted = deleteFromAuct.executeUpdate(); //NOW deletes it from auctions
 		
 		if(numDeleted < 1){
 			
@@ -48,18 +58,14 @@
 			
 		}else{
 		
-			PreparedStatement deleteFromAucInfo = conn.prepareStatement("DELETE FROM auction_info WHERE auction_id = ?");
+			/*PreparedStatement deleteFromAucInfo = conn.prepareStatement("DELETE FROM auction_info WHERE auction_id = ?");
 			deleteFromAucInfo.setInt(1, illeg_auc);
 			
-			deleteFromAucInfo.executeUpdate();
+			deleteFromAucInfo.executeUpdate();*/
 			
-			PreparedStatement deleteFromBids = conn.prepareStatement("DELETE FROM makes_bid WHERE auction_id = ? AND seller_id=? ");
-			deleteFromBids.setInt(1, illeg_auc);
-			deleteFromBids.setString(2, auctioner_ID);
 			
-			deleteFromBids.executeUpdate();
 			
-			out.print("Deleted from auctions, auction_info, makes_bid | " + illeg_auc + ", by " + auctioner_ID);
+			out.print("Deleted from auctions, makes_bid |      #" + illeg_auc + ", by " + auctioner_ID);
 			
 		}
 		

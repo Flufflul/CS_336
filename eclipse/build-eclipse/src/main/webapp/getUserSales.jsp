@@ -11,6 +11,8 @@
     <title>CS 336: Register</title>
 </head>
 <body>
+
+
 	<h1>User purchase history: </h1>
 	<hr><br>
 	<%
@@ -20,7 +22,7 @@
 			ApplicationDB db = new ApplicationDB();	
 			Connection gus_con = db.getConnection();	
 			
-			PreparedStatement totalSales = gus_con.prepareStatement("SELECT SUM(highest_current_bid) AS total_sales FROM auctions a JOIN auction_info ai ON a.auction_id = ai.auction_id JOIN items i ON i.item_id = a.item_id WHERE winner <> '' AND seller_id = ?");
+			PreparedStatement totalSales = gus_con.prepareStatement("SELECT SUM(highest_current_bid) AS total_sales FROM auctions a JOIN items i ON i.item_id = a.item_id WHERE winner <> '' AND seller_id = ?");
 			
 			String targetUser = request.getParameter("userSalesName");
 			targetUser = targetUser.replaceAll(" ", "");
@@ -42,13 +44,13 @@
 				
 				
 				/*get purchase history*/
-				PreparedStatement salesHistory = gus_con.prepareStatement("SELECT a.item_id, i.model_name, ai.highest_current_bid AS price FROM auctions a JOIN auction_info ai ON a.auction_id = ai.auction_id JOIN items i ON i.item_id = a.item_id WHERE winner <> '' AND seller_id = ?");
+				PreparedStatement salesHistory = gus_con.prepareStatement("SELECT a.item_id, i.model_name, a.highest_current_bid AS price FROM auctions a JOIN items i ON i.item_id = a.item_id WHERE winner <> '' AND seller_id = ?");
 				salesHistory.setString(1, targetUser);
 				
 				ResultSet sh = salesHistory.executeQuery();
 				
 				out.print("<b>Sales history: </b><br>");
-				out.print("<b>item id | amount paid</b><br>");
+				out.print("<b>id | model_name | amount paid</b><br>");
 				while(sh.next()){
 					
 					//String sellerName = sh.getString("seller_id");
@@ -56,7 +58,7 @@
 					String model_name = sh.getString("i.model_name");
 					double amount = sh.getDouble("price");
 					
-					out.print(itemID + ": " + model_name +  " : $" + amount + "<br>");
+					out.print(itemID + ":  " + model_name +  " : $" + amount + "<br>");
 					
 				}
 				out.print("<br>");

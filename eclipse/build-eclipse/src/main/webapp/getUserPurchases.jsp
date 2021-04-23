@@ -20,7 +20,7 @@
 			ApplicationDB db = new ApplicationDB();	
 			Connection gup_con = db.getConnection();	
 			
-			PreparedStatement totalPurchases = gup_con.prepareStatement("SELECT SUM(highest_current_bid) AS total_purchases FROM auctions a JOIN auction_info ai ON a.auction_id = ai.auction_id JOIN items i ON i.item_id = a.item_id WHERE winner = ?");
+			PreparedStatement totalPurchases = gup_con.prepareStatement("SELECT SUM(highest_current_bid) AS total_purchases FROM auctions a JOIN items i ON i.item_id = a.item_id WHERE winner = ?");
 			
 			String targetUser = request.getParameter("userPurchasesName");
 			targetUser = targetUser.replaceAll(" ", "");
@@ -42,7 +42,7 @@
 				
 				
 				/*get purchase history*/
-				PreparedStatement purchaseHistory = gup_con.prepareStatement("SELECT a.seller_id, a.item_id, i.model_name, ai.highest_current_bid AS price FROM auctions a  JOIN auction_info ai ON a.auction_id = ai.auction_id JOIN items i ON i.item_id = a.item_id WHERE winner = ?");
+				PreparedStatement purchaseHistory = gup_con.prepareStatement("SELECT a.seller_id, a.item_id, i.model_name, a.highest_current_bid AS price FROM auctions a JOIN items i ON i.item_id = a.item_id WHERE winner = ?");
 				purchaseHistory.setString(1, targetUser);
 				
 				ResultSet ph = purchaseHistory.executeQuery();

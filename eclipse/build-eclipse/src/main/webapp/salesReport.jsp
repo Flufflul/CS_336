@@ -20,7 +20,7 @@
 			
 			/******************get total sales on site******************/
 			Statement totalSales = salesCon.createStatement();
-			String totalQuery = "SELECT SUM(ai.highest_current_bid) AS total_sales FROM auctions a JOIN auction_info ai ON a.auction_id = ai.auction_id WHERE winner <> '';";
+			String totalQuery = "SELECT SUM(a.highest_current_bid) AS total_sales FROM auctions a WHERE winner <> '';";
 			ResultSet tsq = totalSales.executeQuery(totalQuery);
 			
 			tsq.next();
@@ -36,14 +36,14 @@
 			
 			/*****************get total sales per item id/name**************/
 			Statement salesPerId = salesCon.createStatement();
-			String perIdQuery = "SELECT a.item_id AS itemID, i.model_name AS model, SUM(highest_current_bid) AS total_sales FROM auctions a JOIN auction_info ai ON a.auction_id = ai.auction_id JOIN items i ON i.item_id = a.item_id WHERE ai.winner <>'' GROUP BY a.item_id";
+			String perIdQuery = "SELECT a.item_id, i.model_name, SUM(highest_current_bid) AS total_sales FROM auctions a JOIN items i ON i.item_id = a.item_id WHERE a.winner<>'' GROUP BY a.item_id;";
 			ResultSet piqSet = salesPerId.executeQuery(perIdQuery);
 			
 			out.print("<b>Sales per unique item</b><br>");
 			out.print("<b>itemid  :  model name  :  total sales</b><br>");
 			while(piqSet.next()){
-				int id = piqSet.getInt("itemID");
-				String name = piqSet.getString("model");
+				int id = piqSet.getInt("a.item_id");
+				String name = piqSet.getString("i.model_name");
 				double itemSales = piqSet.getDouble("total_sales");
 				
 				out.print(id + " : " + name + " : " + "$" + itemSales);
@@ -60,7 +60,7 @@
 			/*****************get total sales figures per item type**************/
 			//total electric
 			Statement totalElecSales = salesCon.createStatement();
-			String totalElecQuery = "SELECT SUM(highest_current_bid) AS el_sales FROM auctions a JOIN auction_info ai ON a.auction_id = ai.auction_id JOIN items i ON i.item_id = a.item_id WHERE winner <> '' AND a.item_id IN (SELECT item_id FROM electric_guitar)";
+			String totalElecQuery = "SELECT SUM(highest_current_bid) AS el_sales FROM auctions a JOIN items i ON i.item_id = a.item_id WHERE winner <> '' AND a.item_id IN (SELECT item_id FROM electric_guitar)";
 			ResultSet teq = totalElecSales.executeQuery(totalElecQuery);
 			
 			teq.next();
@@ -75,7 +75,7 @@
 			
 			//total acoustic
 			Statement totalAcousSales = salesCon.createStatement();
-			String totalAcousQuery = "SELECT SUM(highest_current_bid) AS ac_sales FROM auctions a JOIN auction_info ai ON a.auction_id = ai.auction_id JOIN items i ON i.item_id = a.item_id WHERE winner <> '' AND a.item_id IN (SELECT item_id FROM acoustic_guitar)";
+			String totalAcousQuery = "SELECT SUM(highest_current_bid) AS ac_sales FROM auctions a JOIN items i ON i.item_id = a.item_id WHERE winner <> '' AND a.item_id IN (SELECT item_id FROM acoustic_guitar)";
 			ResultSet taq = totalAcousSales.executeQuery(totalAcousQuery);
 			
 			taq.next();
@@ -90,7 +90,7 @@
 			
 			//total acoustic-electric
 			Statement totalAESales = salesCon.createStatement();
-			String totalAEQuery = "SELECT SUM(highest_current_bid) AS acel_sales FROM auctions a JOIN auction_info ai ON a.auction_id = ai.auction_id JOIN items i ON i.item_id = a.item_id WHERE winner <> '' AND a.item_id IN (SELECT item_id FROM acoustic_electric_guitar)";
+			String totalAEQuery = "SELECT SUM(highest_current_bid) AS acel_sales FROM auctions a JOIN items i ON i.item_id = a.item_id WHERE winner <> '' AND a.item_id IN (SELECT item_id FROM acoustic_electric_guitar)";
 			ResultSet taeq = totalAESales.executeQuery(totalAEQuery);
 			
 			taeq.next();
@@ -110,7 +110,7 @@
 			
 			/*****************get num items sold by each seller**************/
 			Statement itemsSoldByUser = salesCon.createStatement();
-			String isbuQuery = "SELECT a.seller_id AS salesman, COUNT(*) as itemsSold FROM auctions a JOIN auction_info ai ON a.auction_id = ai.auction_id JOIN items i ON i.item_id = a.item_id WHERE ai.winner <> '' GROUP BY a.seller_id ORDER BY itemsSold DESC";
+			String isbuQuery = "SELECT a.seller_id AS salesman, COUNT(*) as itemsSold FROM auctions a JOIN items i ON i.item_id = a.item_id WHERE a.winner <> '' GROUP BY a.seller_id ORDER BY itemsSold DESC";
 			ResultSet isbu = itemsSoldByUser.executeQuery(isbuQuery);
 			
 			out.print("<b>Num Items Sold By User: </b><br>");
@@ -134,7 +134,7 @@
 			
 			/*****************get best selling items (by num items sold)**************/
 			Statement bestSellingItems = salesCon.createStatement();
-			String bsiQuery = "SELECT i.model_name, COUNT(*) AS num_sold FROM auctions a JOIN auction_info ai ON a.auction_id = ai.auction_id JOIN items i ON i.item_id = a.item_id WHERE winner <> '' GROUP BY i.model_name ORDER BY num_sold DESC";
+			String bsiQuery = "SELECT i.model_name, COUNT(*) AS num_sold FROM auctions a JOIN items i ON i.item_id = a.item_id WHERE winner <> '' GROUP BY i.model_name ORDER BY num_sold DESC";
 			ResultSet bsi = bestSellingItems.executeQuery(bsiQuery);
 			
 			out.print("<b>Top 5 Best Selling Items</b><br>");
@@ -159,7 +159,7 @@
 			
 			/*****************get top 3 best buyers based on num items bought**************/
 			Statement getBestBuyers = salesCon.createStatement();
-			String gbbQuery = "SELECT ai.winner as buyer, COUNT(*) as num_items_bought FROM auctions a JOIN auction_info ai ON a.auction_id = ai.auction_id JOIN items i ON i.item_id = a.item_id WHERE ai.winner <> '' GROUP BY ai.winner ORDER BY num_items_bought DESC";
+			String gbbQuery = "SELECT a.winner as buyer, COUNT(*) as num_items_bought FROM auctions a JOIN items i ON i.item_id = a.item_id WHERE a.winner <> '' GROUP BY a.winner ORDER BY num_items_bought DESC";
 			ResultSet gbb = getBestBuyers.executeQuery(gbbQuery);
 			
 			counter = 0; //reuse this counter variable

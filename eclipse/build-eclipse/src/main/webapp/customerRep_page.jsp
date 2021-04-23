@@ -14,6 +14,7 @@
 
 <body>
 	 <h1>Customer Representative View</h1>
+	 <a href="home.jsp">Home</a><br>
 	<a href="profile.jsp">profile</a>
 	<br><br>
 	<a href='logout.jsp'>Logout</a>
@@ -21,16 +22,7 @@
 	
 
 	<b>Respond to help requests</b>	
-	<form method = "post" action = ""> <!---Get/view help tickets and requests--->
-		<table>
-		<tr>
-		<td></td> <td><input type="text" name=""></td>
-		</tr>
-		
-		<tr>
-		<td></td> <td><input type="text" name=""></td>
-		</tr>
-		</table>
+	<form method = "post" action = "getHelpTickets.jsp"> <!---Get/view help tickets and requests--->
 	<input type = "submit" value = "get tickets">
 	</form>
 	
@@ -53,6 +45,7 @@
 	<input type = "submit" value = "update username">
 	</form>
 	
+	<br>
 	
 	<b>Change a user's password</b>	
 	<form method = "post" action = "updatePassword.jsp"> <!---change a user's password--->
@@ -65,7 +58,7 @@
 		<td>New/temp password: </td> <td><input type="text" name="newPassword"></td>
 		</tr>
 		</table>
-	<input type = "submit" value = "update username">
+	<input type = "submit" value = "update password">
 	</form>
 	
 	
@@ -79,14 +72,14 @@
 	<form method = "post" action = "deleteItem.jsp"><!---Delete an illegal/disallowed auction--->
 		<table>
 		<tr>
-		<td>username:</td><td><input type="text" name="del_auction_seller"></td>
+		<td>seller name:</td><td><input type="text" name="del_auction_seller"></td>
 		</tr>
 		
 		<tr>
-		<td>Auction_ID:</td><td><input type="text" name="del_auction_ID"></td>
+		<td>Auction ID:</td><td><input type="text" name="del_auction_ID"></td>
 		</tr>
 		</table>
-	<input type = "submit" value = "Delete/Remove an Auction">
+	<input type = "submit" value = "Delete Auction">
 	</form>
 	
 	
@@ -108,7 +101,7 @@
 		</table>
 	<input type = "submit" value = "Delete a particular bid">
 	</form>
-	
+	<p><b>Datetime format:</b>   YYYY-MM-DD HH:MM:SS</p>
 	
 	
 	<br>

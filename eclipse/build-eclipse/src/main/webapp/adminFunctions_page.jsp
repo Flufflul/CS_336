@@ -22,10 +22,12 @@ TODO: sales reports by:
 </head>
 
 <body>
-	<h1> Admin Only Functions</h1>
-	<a href="profile.jsp">profile</a>
+	<a href="home.jsp">Home</a>
+	<br><br>
+	<a href="profile.jsp">Profile</a>
 	<br><br>
 	<a href='logout.jsp'>Logout</a>
+	<h1> Admin Only Functions</h1>
 	<hr><br>
 	
 	<b>Create New Representative Account</b>
