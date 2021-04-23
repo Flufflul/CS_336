@@ -18,10 +18,9 @@ try {
 	// Connect to DB
 	ApplicationDB db = new ApplicationDB();	
 	Connection con = db.getConnection();
-	PreparedStatement stmt = null;
 	
 	/*
-		items:						electric_guitar:			acoustic_guitar:			acoustic_electric_guitar:
+		items:						acoustic_guitar:			electric_guitar:			acoustic_electric_guitar:
 			item_id (int, auto),		item_id (int),				item_id (int),				item_id (int),
 			model_name (varchar),		pickup_config (varchar)		is_classical (bool, 0/1)	pickup_type (varchar),
 			manufacturer (varchar),																includes_tuner (bool, 0/1)
@@ -31,8 +30,9 @@ try {
 	/* First, create item */
 
 	// Prepare query
+	PreparedStatement stmt = null;
 	String qry = "INSERT INTO items VALUES (?,?,?,?)";
-	stmt = con.prepareStatement(qry);
+	stmt = con.prepareStatement(qry, Statement.RETURN_GENERATED_KEYS);
 	boolean failed = false;
 
 	//1 item_id (R)		-> int null
@@ -71,74 +71,100 @@ try {
 	
 	stmt.setString(4, qry_numStrings);
 	
-	// Check for failure
-	if (failed) { response.sendRedirect("add-item.jsp"); }
 	
+	// Check if correct format
+	out.print(qry+"|"+null+","+qry_modelName+","+qry_manufacturer+","+qry_numStrings+"<br>");
 	
 	/* Second, determine isa */
 	Statement stmt2 = con.createStatement();
 
 	String qryInsert = "INSERT INTO ";
 	String qryTable  = "";
-	String qryValues = " VALUES ";
-	String qryParams = "";
+	String qryValues = " VALUES (";
+	int qryKey;
+	String qryParams = ",";
 	
-	String ac = request.getParameter("submit_ac");		out.print(ac+"<br>");
 	String el = request.getParameter("submit_el");		out.print(el+"<br>");
-	String acel = request.getParameter("submit_acel");	out.print(acel);
+	String ac = request.getParameter("submit_ac");		out.print(ac+"<br>");
+	String acel = request.getParameter("submit_acel");	out.print(acel+"<br>");
 	
-	
-	if (!ac.equals(null)) { // Parse acoustic if so
+	session.setAttribute("elPickupConfigFail", false);
+	session.setAttribute("acelPickupTypeFail", false);
+
+	if (el != null) { // Parse electric if so
 		out.print("here1");
-		qryTable += "acoustic_guitar";
-		
-		String pickupConfig = request.getParameter("input_acPickupConfig");
-		if (pickupConfig.equals("")) {
-			failed = true;
-			session.setAttribute("acPickupConfigFail", true);
-		}
-		
-		qryParams += "('"+pickupConfig+"')";
-	} out.print("if1");
-	if (!el.equals(null)) { // Parse electric if so
-		out.print("here2");
 		qryTable += "electric_guitar";
 		
-		String isClassical = request.getParameter("input_elIsClassical");
-		if (isClassical.equals("")) {
-			failed = true;
-			session.setAttribute("elIsClassicalFail", true);
-		}
-		
-		qryParams += "("+isClassical+")";
-	} out.print("if2");
-	if (!acel.equals(null)) { // Parse acoustic-electric if so
-//		out.print("here3");
-		qryTable += "acoustic_electric_guitar";
-
-		String pickupConfig = request.getParameter("input_acelPickupConfig");
+		String pickupConfig = request.getParameter("input_elPickupConfig");
 		if (pickupConfig.equals("")) {
 			failed = true;
-			session.setAttribute("acelPickupConfig", true);
+			session.setAttribute("elPickupConfigFail", true);
 		}
+		
+		qryParams += "'"+pickupConfig+"'";
+		out.print("leaving1");
+	} //out.print("if1");
+	
+	else if (ac != null) { // Parse acoustic if so
+		out.print("here2");
+		qryTable += "acoustic_guitar";
+		
+		String strIsClassical = request.getParameter("input_acIsClassical"); //out.print(strIsClassical+"classical?");
+		Boolean isClassical = true;
+		if (strIsClassical == null) { isClassical = false; }
+		
+		qryParams += ""+isClassical;
+		out.print("leaving2");
+	} //out.print("if2");
+	
+	else if (acel != null) { // Parse acoustic-electric if so
+		out.print("here3");
+		qryTable += "acoustic_electric_guitar";
 
-		qryParams += "('"+pickupConfig+"',";
-
-		String includesTuner = request.getParameter("input_acelIncTuner");
-		if (includesTuner.equals("")) {
+		String pickupType = request.getParameter("input_acelPickupType");
+		if (pickupType.equals("")) {
 			failed = true;
-			session.setAttribute("acelPickupConfig", true);
+			session.setAttribute("acelPickupTypeFail", true);
 		}
 
-		qryParams += includesTuner+")";
-	} out.print("if3");
-	
-	// Otherwise fail
-	//else { response.sendRedirect("add-item.jsp"); }
-	
-	
-	out.print(qryInsert+qryTable+qryValues+qryParams);
+		qryParams += "'"+pickupType+"',";
 
+		String strIncludesTuner = request.getParameter("input_acelIncTuner");
+		Boolean includesTuner = true;
+		if (strIncludesTuner == null) { includesTuner = false; }
+		
+		qryParams += includesTuner;
+		out.print("leaving3");
+	} //out.print("if3");
+	
+	// Otherwise directly fail
+	else { response.sendRedirect("add-item.jsp"); }
+	
+	qryParams += ")";
+	out.print("out1");
+	
+	// Check for failure
+	if (failed) { response.sendRedirect("add-item.jsp"); }
+	else {
+		
+		/* Confirmed success, begin insertion */
+		stmt.executeUpdate();
+		
+		ResultSet tableKeys = stmt.getGeneratedKeys();
+		tableKeys.next();
+		qryKey = tableKeys.getInt(1);
+		out.print(qryKey);
+		
+		String qry2 = qryInsert + qryTable + qryValues + qryKey + qryParams; out.print("<br>"+qry2);
+		stmt2.executeUpdate(qry2);
+		
+		out.print(qry + "| " + qryKey + qry_modelName + qry_manufacturer + qry_numStrings);
+		out.print(qry2);
+		
+		session.setAttribute("itemAdded", true);
+	}
+	
+	response.sendRedirect("add-item.jsp");
 	
 	// Close DB connection for stability
 	db.closeConnection(con);

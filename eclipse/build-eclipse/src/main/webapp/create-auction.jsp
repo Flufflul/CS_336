@@ -116,6 +116,17 @@
 		
 		out.print("</form>");
 		
+		//set attributes for pages related to this page
+		session.setAttribute("itemAdded", false); 			//item added to db
+		
+    	session.setAttribute("modelNameFail", false);		//modelname is empty
+    	session.setAttribute("manufacturerFail", false);	//manufacturer is empty
+    	session.setAttribute("numStringsFail", false);		//numstrings is empty
+    	
+    	session.setAttribute("elPickupConfigFail", false);	//acoustic fail
+    	session.setAttribute("acelPickupTypeFail", false);//acoustic-electric fail
+
+		
 		db.closeConnection(con);
 	%>
 </body>

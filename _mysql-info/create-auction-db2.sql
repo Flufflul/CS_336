@@ -55,8 +55,8 @@ CREATE TABLE IF NOT EXISTS Items(
 
 CREATE TABLE IF NOT EXISTS Electric_Guitar(
 	item_id int not null,
-	pickup_config char(3) not null,  
-	/*Pickup configurations are usually like: SSS, SSH, HH, SS, HSH,   
+	pickup_config varchar(8) not null,  
+	/*Pickup configurations are usually like: SSS, SSH, HH, SS, HSH,
 	S = single coil pickup, H = humbucking pickup
     SSS means that there are 3 single coil pickups, SSH means 2 single coil and one humbucking, etc.*/
 	

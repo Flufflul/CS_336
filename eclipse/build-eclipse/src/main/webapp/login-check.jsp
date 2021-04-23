@@ -68,6 +68,9 @@
         	session.setAttribute("modelNameFail", false);		//modelname is empty
         	session.setAttribute("manufacturerFail", false);	//manufacturer is empty
         	session.setAttribute("numStringsFail", false);		//numstrings is empty
+        	
+        	session.setAttribute("elPickupConfigFail", false);	//acoustic fail
+        	session.setAttribute("acelPickupTypeFail", false);	//acoustic-electric fail
 
             
 			//close the connection.
