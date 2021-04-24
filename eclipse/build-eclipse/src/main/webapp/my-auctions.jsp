@@ -186,14 +186,40 @@ public float getHighestBid(Connection con, int auctionID) {
 	<table style="width:30vw; ">
 		<tr style="text-align: left">
 			<th>Auction</th>
-			<th>Item</th>
 			<th>Seller</th>
+			<th>Item</th>
 			<th>Winner</th>
 		</tr>
 		
 		<%
 		try {
-			// Retrieve
+			// Retrieve completed auction info: auction_id, model_name, seller_id, winner
+			String qry =	"SELECT a.auction_id, i.model_name, a.seller_id, a.winner "+
+							"FROM auctions a "+
+							"INNER JOIN items i ON i.item_id = a.item_id "+
+							"WHERE a.winner <> '' "+
+							"OR a.winner IS NOT NULL ";
+			Statement stmt = con.createStatement();
+			ResultSet res = stmt.executeQuery(qry);
+			
+			while (res.next()) {
+				out.print("<tr>");
+				
+				int auctionID = res.getInt("auction_id");
+				String modelName = res.getString("model_name");
+				String sellerID = res.getString("seller_id");
+				String winner = res.getString("winner");
+				
+				// if winner is "f" then completed auction with no winner
+				if (winner.equals("f")) { winner = "No winner"; }
+				
+				out.print(	"<td>"+auctionID+"</td>"+
+							"<td>"+sellerID+"</td>"+
+							"<td>"+modelName+"</td>"+
+							"<td>"+winner+"</td>");
+				
+				out.print("</tr>");
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
