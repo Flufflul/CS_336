@@ -52,21 +52,28 @@
 	
 	// List info of auction
 	String itemName = res.getString("model_name");
-	out.print("<h1>"+itemName+"</h1>");							// Item name
+	out.print("<h1 style='line-height:2px;'>"+itemName+"</h1>");							// Item name
 	
 	String sellerName = res.getString("seller_id");
-	out.print("<h2>auctioned by "+sellerName+"</h2>");			// By seller
+	out.print("<h3>Auctioned by: "+sellerName+"</h3>");			// By seller
 	
 	
 	out.print("<table>");
 	
 	java.sql.Timestamp expires = res.getTimestamp("expires");	// Auction expiration date
-	out.print("<tr><td>Auction expires on</td><td>"+expires+"</td></tr>");
+	out.print("<tr><td>Auction expires on: </td><td>"+expires+"</td></tr>");
 	
+	float startPrice = res.getFloat("starting_price");
+	out.print("<tr><td>Starting price: </td><td>$ "+startPrice+"</td></tr>");
 	
+	float buyoutPrice = res.getFloat("buy_now_price");
+	out.print("<tr><td>Buyout price: </td><td>$ "+buyoutPrice+"</td></tr>");
+	
+	float currHighest = res.getFloat("highest_current_bid");
+	out.print("<tr><td>Current highest bid: </td><td>$ "+currHighest+"</td></tr>");
 	
 	%>
 	
-	<%= db.closeConnection(con) %>
+	<% db.closeConnection(con); %>
 </body>
 </html>
