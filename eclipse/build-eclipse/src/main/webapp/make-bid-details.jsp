@@ -52,19 +52,21 @@
 	
 	// List info of auction
 	String itemName = res.getString("model_name");
-	out.print("<h1>"+itemName+"</h1>");					// Item name
+	out.print("<h1>"+itemName+"</h1>");							// Item name
 	
 	String sellerName = res.getString("seller_id");
-	out.print("<h2>auctioned by "+sellerName+"</h2>");	// By seller
+	out.print("<h2>auctioned by "+sellerName+"</h2>");			// By seller
 	
 	
 	out.print("<table>");
 	
-	java.sql.Date expires = res.getDate("expires");		// Auction expiration date
-	out.print("<tr><td>Expires</td><td>"+expires+"</td></tr>");
+	java.sql.Timestamp expires = res.getTimestamp("expires");	// Auction expiration date
+	out.print("<tr><td>Auction expires on</td><td>"+expires+"</td></tr>");
+	
 	
 	
 	%>
 	
+	<%= db.closeConnection(con) %>
 </body>
 </html>
