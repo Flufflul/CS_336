@@ -133,6 +133,11 @@
 				Boolean bidFail = (Boolean) session.getAttribute("bidFail");
 				if (bidFail) { out.print("<td><p style='color:red;'>*Invalid bid</p></td>"); }
 				session.setAttribute("bidFail", false);
+				
+				//Check if success
+				Boolean bidSuccess = (Boolean) session.getAttribute("bidSuccess");
+				if (bidSuccess) { out.print("<td><p style='color:green;'>Bid successfully placed!</p></td>"); }
+				session.setAttribute("bidSuccess", false);
 				%>
 			</tr>
 			<tr>

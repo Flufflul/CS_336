@@ -36,21 +36,21 @@
 	if (strBid.equals("")) {
 		failed = true;
 		session.setAttribute("bidFail", true);
-		response.sendRedirect("make-bid-details.jsp");
 	}
 	else {
 		float bid = Float.parseFloat(strBid);
 		
 		/*	
-			1 buyer_id (vchar),
-			2 auction_id (int),
-			3 bid_time (datetime),
-			4 bid (float),
+			1 buyer_id (vchar)
+			2 auction_id (int)
+			3 bid_time (datetime)
+			4 bid (float)
 			5 is_auto_bid (bool)
 			6 bid_max (float)
-			7 auto_bid_increment
+			7 auto_bid_increment (float)
+			8 
 		*/
-		String qry = "INSERT INTO makes_bid VALUES (?,?,?,?,?,?,?,?)";
+		String qry = "INSERT INTO makes_bid VALUES (?,?,?,?,?,?,?)";
 		PreparedStatement stmt = con.prepareStatement(qry);
 		
 		// First get info on previous bids. Since this is manual, we need to know auto information
@@ -84,13 +84,37 @@
 			check.executeUpdate(check_qry);
 		}
 		check.close();
-
-		
+				
 		// Now, let's start inserting values!
+		// 1) buyer_id (vchar)
 		stmt.setString(1, user);
+		
+		// 2) auction_id (int)
+		stmt.setInt(2, auctionID);
+		
+		// 3) bid_time (datetime)
+		java.sql.Timestamp now = new java.sql.Timestamp(System.currentTimeMillis());
+		stmt.setTimestamp(3, now);
+		
+		// 4) bid (float)
+		stmt.setFloat(4, bid);
+		
+		// 5) is_auto_bid (bool)
+		stmt.setBoolean(5, isAuto);
+		
+		// 6) bid_max (float)
+		stmt.setFloat(6, bidMax);
+		
+		// 7) auto_bid_increment (float)
+		stmt.setFloat(7, autoIncr);
+		
+		// Execute update
+		stmt.executeUpdate();
+		
+		session.setAttribute("bidSuccess", true);
 	}
 	
-	
+	response.sendRedirect("make-bid-details.jsp");
 	%>
 	
 <% db.closeConnection(con); %>

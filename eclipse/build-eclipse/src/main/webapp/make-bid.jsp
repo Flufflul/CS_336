@@ -13,6 +13,7 @@
 	<%
 	session.setAttribute("bidFail", false);
 	session.setAttribute("tempAucID", -1);
+	session.setAttribute("bidSuccess", false);
 	%>
 	
 	<%
