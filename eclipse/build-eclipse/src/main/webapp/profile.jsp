@@ -29,10 +29,10 @@
 		}
 		
 		if (privileges.equals("admin_staff")) {
-			out.print("<em>administrator</em> ");
+			out.print("<em><a href='adminFunctions_page.jsp'>administrator</a></em> ");
 		} 
 		else if (privileges.equals("customer_rep")) {
-			out.print("<em>customer representative</em> ");
+			out.print("<em><a href='customerRep_page.jsp'>customer representative</a></em> ");
 		}
 		
 		if (!isStaff) {
