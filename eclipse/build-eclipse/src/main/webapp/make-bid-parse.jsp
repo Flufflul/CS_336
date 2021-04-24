@@ -16,6 +16,8 @@
 	Connection con = db.getConnection();
 	
 	Boolean failed = false;
+	String user = (String) session.getAttribute("user");
+	int auctionID = (Integer) session.getAttribute("tempAucID");
 	%>
 	
 </head>
@@ -39,9 +41,53 @@
 	else {
 		float bid = Float.parseFloat(strBid);
 		
-		Statement stmt = con.createStatement();
-		String qry;
+		/*	
+			1 buyer_id (vchar),
+			2 auction_id (int),
+			3 bid_time (datetime),
+			4 bid (float),
+			5 is_auto_bid (bool)
+			6 bid_max (float)
+			7 auto_bid_increment
+		*/
+		String qry = "INSERT INTO makes_bid VALUES (?,?,?,?,?,?,?,?)";
+		PreparedStatement stmt = con.prepareStatement(qry);
 		
+		// First get info on previous bids. Since this is manual, we need to know auto information
+		String qryAuto = 	"SELECT * "+
+							"FROM makes_bid m "+
+							"WHERE buyer_id = '"+user+"' "+
+							"AND auction_id = "+auctionID+" "+
+							"ORDER BY bid_time DESC LIMIT 1";
+		Statement stmtAuto = con.createStatement();
+		ResultSet resAuto = stmtAuto.executeQuery(qryAuto);
+		
+		// If exists, copy info. Otherwise set manual bid defaults
+		Boolean isAuto = false;
+		float bidMax = 0;
+		float autoIncr = 0;
+		
+		if (resAuto.next()) {
+			isAuto = resAuto.getBoolean("is_auto_bid");
+			if (isAuto) {
+				bidMax = resAuto.getFloat("bid_max");
+				autoIncr = resAuto.getFloat("auto_bid_increment");
+			}
+		}
+		
+		// Make user a buyer because the DB is horribly built
+		Statement check = con.createStatement();
+		String check_qry = "SELECT * FROM buyers b WHERE b.buyer_id = '"+user+"'";
+		ResultSet check_rs = check.executeQuery(check_qry);
+		if (!check_rs.next()) {
+			check_qry = "INSERT INTO buyers VALUES ('"+user+"')";
+			check.executeUpdate(check_qry);
+		}
+		check.close();
+
+		
+		// Now, let's start inserting values!
+		stmt.setString(1, user);
 	}
 	
 	
