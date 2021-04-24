@@ -11,6 +11,11 @@
 	<title>CS 336: All auctions</title>
 	
 	<%
+	session.setAttribute("bidFail", false);
+	session.setAttribute("tempAucID", -1);
+	%>
+	
+	<%
 	// Connect to DB
 	ApplicationDB db = new ApplicationDB();	
 	Connection con = db.getConnection();
@@ -85,10 +90,10 @@
 					%>
 				</select></td>
 				<%
-				Object strBidFail = session.getAttribute("bidFail");
-				Boolean bidFail = (Boolean) strBidFail;
-				if (bidFail) { out.print("<td><p style='color:red;'>*Please select a valid option</p></td>"); }
-				session.setAttribute("bidFail", false);
+				Object strSelectFail = session.getAttribute("selectFail");
+				Boolean selectFail = (Boolean) strSelectFail;
+				if (selectFail) { out.print("<td><p style='color:red;'>*Please select a valid option</p></td>"); }
+				session.setAttribute("selectFail", false);
 				%>
 			</tr>
 			<!-- 

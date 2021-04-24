@@ -14,6 +14,8 @@
 	// Connect to DB
 	ApplicationDB db = new ApplicationDB();	
 	Connection con = db.getConnection();
+	
+	Boolean failed = false;
 	%>
 	
 </head>
@@ -25,9 +27,37 @@
 	<a href='make-bid.jsp'>Back</a>
 	<hr><br>
 	
+	<%
+	/* GOAL: Parse bid info and insert into makes_bid table */
+	String strBid = request.getParameter("newBid");
+	
+	if (strBid.equals("")) {
+		failed = true;
+		session.setAttribute("bidFail", true);
+		response.sendRedirect("make-bid-details.jsp");
+	}
+	else {
+		float bid = Float.parseFloat(strBid);
+		
+		Statement stmt = con.createStatement();
+		String qry;
+		
+	}
 	
 	
-
+	%>
+	
 <% db.closeConnection(con); %>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

@@ -12,7 +12,7 @@
 <title>CS 336: My Auctions</title>
 
 <%
-session.setAttribute("bidFail", false);
+session.setAttribute("selectFail", false);
 %>
 
 </head>

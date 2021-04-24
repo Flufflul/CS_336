@@ -30,16 +30,21 @@
 	/* Pull required auction & item info */
 	// Retrieve selected auction
 	String strAuctionID = request.getParameter("auctions");
+	int tempAucID = (Integer) session.getAttribute("tempAucID");
 	
 	Boolean failed = false;
-	if (strAuctionID.equals("")) { 
+	if (tempAucID == -1 && strAuctionID.equals("")) { 
 		failed = true; 
-		session.setAttribute("bidFail", true);
+		session.setAttribute("selectFail", true);
 		response.sendRedirect("make-bid.jsp");
 	}
 	else {
-		
-		int auctionID = Integer.parseInt(strAuctionID);
+		int auctionID;
+		if (tempAucID == -1) { 
+			auctionID = Integer.parseInt(strAuctionID); 
+			session.setAttribute("tempAucID", auctionID); 
+		}
+		else { auctionID = tempAucID; }
 		
 		// Retrieve all info on auction
 		Statement stmt = con.createStatement();
@@ -122,7 +127,13 @@
 			%>
 			<tr>
 				<td>Place a bid: $</td>
-				<td><input type='number' placeholder='0'/></td>
+				<td><input type='number' name='newBid' placeholder='0'/></td>
+				<%
+				// Check if failure
+				Boolean bidFail = (Boolean) session.getAttribute("bidFail");
+				if (bidFail) { out.print("<td><p style='color:red;'>*Invalid bid</p></td>"); }
+				session.setAttribute("bidFail", false);
+				%>
 			</tr>
 			<tr>
 				<td></td>
