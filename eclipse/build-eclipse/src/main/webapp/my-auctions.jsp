@@ -11,6 +11,8 @@
 <meta charset="UTF-8">
 <title>CS 336: My Auctions</title>
 
+<%@ include file="check-winners.jsp" %>
+
 <%
 // Connect to DB
 ApplicationDB db = new ApplicationDB();	
@@ -48,6 +50,12 @@ public float getHighestBid(Connection con, int auctionID) {
 }
 %>
 
+<%
+/* Check for auction updates each time this page is loaded */
+
+
+%>
+
 </head>
 
 <body style='font-family: sans-serif'>
@@ -61,17 +69,18 @@ public float getHighestBid(Connection con, int auctionID) {
 	 -->
 	<h1><a href='make-bid.jsp'>Make bid</a></h1>
 	
-	<table style="width:20vw; ">
+	<table style="width:30vw; ">
 		<tr style="text-align: left">
 			<th>Auction</th>
 			<th>Item</th>
 			<th>Your bid</th>
 			<th>Top bid</th>
+			<th>Status</th>
 		</tr>
 		<%
 		try {
 			// Retrieve all auctions that user has made a bid on
-			String qry =	"SELECT a.auction_id, i.model_name, max(m.bid) bid, a.highest_current_bid "+
+			String qry =	"SELECT a.auction_id, i.model_name, max(m.bid) bid, a.highest_current_bid, a.winner "+
 							"FROM makes_bid m "+
 							"INNER JOIN auctions a ON m.auction_id = a.auction_id "+
 							"INNER JOIN items i ON a.item_id = i.item_id "+
@@ -99,6 +108,22 @@ public float getHighestBid(Connection con, int auctionID) {
 				else { out.print("<td style='color:red;'>"); }
 				out.print(topBid+"</td>");
 				
+				// Status of auction: winner, no winner, still auctioning
+				String winner = res.getString("winner");
+				if (winner == null || winner.equals("")) {
+					// Still ongoing
+					out.print("<td>Ongoing");
+				}
+				else if (winner.equals("f") || !winner.equals(user)) {
+					// Auction has no winner or user did not win
+					out.print("<td style='color:red;'>Lost");
+				}
+				else {
+					// User won the auction
+					out.print("<td style='color:green;'>Won");
+				}
+				out.print("</td>");
+				
 				out.print("</tr>");
 			}
 			
@@ -114,7 +139,7 @@ public float getHighestBid(Connection con, int auctionID) {
 	
 	<h1><a href='create-auction.jsp'>Create auction</a></h1>
 	
-	<table style="width:20vw; ">
+	<table style="width:30vw; ">
 		<tr style="text-align: left">
 			<th>Your auction</th>
 			<th>Item</th>
@@ -148,6 +173,27 @@ public float getHighestBid(Connection con, int auctionID) {
 			}
 			
 			stmt.close();		
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		%>
+	</table>
+	<br>
+	
+	<h1>Completed auctions</h1>
+	
+	<table style="width:30vw; ">
+		<tr style="text-align: left">
+			<th>Auction</th>
+			<th>Item</th>
+			<th>Seller</th>
+			<th>Winner</th>
+		</tr>
+		
+		<%
+		try {
+			// Retrieve
 		}
 		catch (Exception e) {
 			e.printStackTrace();

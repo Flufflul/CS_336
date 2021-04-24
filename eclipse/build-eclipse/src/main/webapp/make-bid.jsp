@@ -40,7 +40,6 @@
 	}
 	</script>
 	-->
-	
 </head>
 
 
@@ -74,10 +73,12 @@
 					
 					// Retrieve list of auctions with item info NOT by user
 					Statement stmt = con.createStatement();
-					String qry = 	"SELECT a.auction_id, a.seller_id, i.model_name "+
+					String qry = 	"SELECT a.auction_id, a.seller_id, i.model_name, a.winner "+
 									"FROM auctions a "+
 									"INNER JOIN items i ON a.item_id = i.item_id "+
-									"WHERE a.seller_id <> '"+user+"' ";
+									"WHERE a.seller_id <> '"+user+"' "+
+									"AND a.winner IS NULL "+
+									"OR winner = '' ";
 					ResultSet res = stmt.executeQuery(qry);
 					
 					// List auctions
