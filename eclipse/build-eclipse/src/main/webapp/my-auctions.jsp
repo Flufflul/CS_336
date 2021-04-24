@@ -7,7 +7,7 @@
 <html>
 
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <title>CS 336: My Auctions</title>
 </head>
 
@@ -20,7 +20,11 @@
 		> List all 'auctions' (not bids) hosted by user
 		> Link to each auction
 	 -->
+	<h1><a href='make-bid.jsp'>Make bid</a></h1>
+	<br>
+	
 	<h1><a href='create-auction.jsp'>Create auction</a></h1>
+	<br>
 	
 	<%
 		try {
