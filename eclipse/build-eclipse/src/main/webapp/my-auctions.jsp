@@ -41,11 +41,12 @@ session.setAttribute("selectFail", false);
 			<th>Auction</th>
 			<th>Item</th>
 			<th>Your bid</th>
+			<th>Top bid</th>
 		</tr>
 		<%
 		try {
 			// Retrieve all auctions that user has made a bid on
-			String qry =	"SELECT a.auction_id, i.model_name, m.bid "+
+			String qry =	"SELECT a.auction_id, i.model_name, m.bid, a.highest_current_bid "+
 							"FROM makes_bid m "+
 							"INNER JOIN auctions a ON m.auction_id = a.auction_id "+
 							"INNER JOIN items i ON a.item_id = i.item_id "+
@@ -61,10 +62,16 @@ session.setAttribute("selectFail", false);
 				int auctionID = res.getInt("auction_id");
 				String modelName = res.getString("model_name");
 				float bid = res.getFloat("bid");
+				float topBid = res.getFloat("highest_current_bid");
 				
 				out.print(	"<td>"+auctionID+"</td>"+
 							"<td>"+modelName+"</td>"+
 							"<td>"+bid+"</td>");
+				
+				// Green if you are top bid, red if other
+				if (bid >= topBid) { out.print("<td style='color:green;'>"); }
+				else { out.print("<td style='color:red;'>"); }
+				out.print(topBid+"</td>");
 				
 				out.print("</tr>");
 			}
