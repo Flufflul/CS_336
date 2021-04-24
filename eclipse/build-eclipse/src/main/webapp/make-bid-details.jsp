@@ -48,7 +48,9 @@
 		
 		// Retrieve all info on auction
 		Statement stmt = con.createStatement();
-		String qry_fragment = 	"SELECT a.seller_id, a.expires, a.starting_price, a.buy_now_price, a.min_increment, highest_current_bid, i.model_name, i.manufacturer, i.num_Strings, g.* "+
+		String qry_fragment = 	"SELECT a.seller_id, a.expires, a.starting_price, a.buy_now_price, a.min_increment, highest_current_bid, "+
+									"i.model_name as 'Model name', i.manufacturer as 'Manufacturer', i.num_Strings as 'No. of strings', "+
+									"g.* "+
 								"FROM auctions a "+
 								"INNER JOIN items i ON a.item_id = i.item_id ";
 		String qry_this =	"WHERE a.auction_id = "+auctionID;
@@ -66,14 +68,17 @@
 		}
 		
 		// List info of auction
-		String itemName = res.getString("model_name");
-		out.print("<h1 style='line-height:2px;'>"+itemName+"</h1>");							// Item name
+		String itemName = res.getString("Model name");
+		String manufacturer = res.getString("Manufacturer");
+		out.print("<h1 style='line-height:2px;'>"+manufacturer+" "+itemName+"</h1>");							// Item name
 		
 		String sellerName = res.getString("seller_id");
 		out.print("<h3>Auctioned by: "+sellerName+"</h3>");			// By seller
 		
 		
 		out.print("<table>");
+		
+		out.print("<tr><td><b>Auction details:</b></td></tr>");
 		
 		java.sql.Timestamp expires = res.getTimestamp("expires");	// Auction expiration date
 		out.print("<tr><td>Auction expires on: </td><td>"+expires+"</td></tr>");
@@ -84,11 +89,37 @@
 		float buyoutPrice = res.getFloat("buy_now_price");
 		out.print("<tr><td>Buyout price: </td><td>$ "+buyoutPrice+"</td></tr>");
 		
-		float currHighest = res.getFloat("highest_current_bid");
-		out.print("<tr><td>Current highest bid: </td><td>$ "+currHighest+"</td></tr>");
+		// current highest bid is a little special because it is actually a calculated attribute
+		float topBid = 0;
+		String qryHighest = "SELECT max(m.bid) top_bid "+
+							"FROM makes_bid m "+
+							"WHERE m.auction_id = "+auctionID+" "+
+							"GROUP BY m.buyer_id "+
+							"ORDER BY top_bid desc "+
+							"LIMIT 1 ";
+		Statement stmtHighest = con.createStatement();
+		ResultSet resHighest = stmtHighest.executeQuery(qryHighest);
+		if (resHighest.next()) { topBid = resHighest.getFloat("top_bid"); }
+		out.print("<tr><td>Current highest bid: </td><td>$ "+topBid+"</td></tr>");
+		
+		//float topBid1 = res.getFloat("highest_current_bid");
+		//out.print("<tr><td>Current highest bid: </td><td>$ "+topBid1+"</td></tr>");
 		
 		float minIncr = res.getFloat("min_increment");
 		out.print("<tr><td>Minimum increment: </td><td>$ "+minIncr+"</td></tr>");
+		
+		// Extra details from isa
+		out.print("<tr><td><b>Other details:<b></td></tr>");
+		
+		int arbDataCount = 7; // Arbitrary data after 6th column
+		int arbDataBound = res.getMetaData().getColumnCount();
+		for (; arbDataCount <= arbDataBound; arbDataCount++) {
+			String colName = res.getMetaData().getColumnLabel(arbDataCount);
+			String colVal = res.getString(arbDataCount);
+			
+			if (colName.equals("item_id")) { continue; }
+			out.print("<tr><td>"+colName+": </td><td>"+colVal+"</td></tr>");
+		}
 		
 		out.print("</table>");
 	
@@ -106,7 +137,7 @@
 			String user = (String) session.getAttribute("user");
 			
 			Statement stmtBidCheck = con.createStatement();
-			String qryBidCheck = 	"SELECT *, max(bid) topBid "+
+			String qryBidCheck = 	"SELECT *, max(bid) top_bid "+
 									"FROM makes_bid m "+
 									"WHERE buyer_id = '"+user+"' "+
 									"AND auction_id = "+auctionID;
@@ -118,8 +149,8 @@
 						"<td>");
 			
 			if (resBidCheck.next()) { 
-				float topBid = resBidCheck.getFloat("topBid");
-				out.print("$ "+topBid);
+				float topBidCheck = resBidCheck.getFloat("top_bid");
+				out.print("$ "+topBidCheck);
 			}
 			else { out.print("No bid"); }
 			

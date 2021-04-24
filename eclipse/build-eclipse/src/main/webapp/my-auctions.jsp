@@ -23,6 +23,31 @@ String user = (String) session.getAttribute("user");
 session.setAttribute("selectFail", false);
 %>
 
+<%!
+//Functions
+public float getHighestBid(Connection con, int auctionID) {
+	// current highest bid is a little special because it is actually a calculated attribute
+	float topBid = 0;
+	
+	try {
+		String qryHighest = "SELECT max(m.bid) top_bid "+
+							"FROM makes_bid m "+
+							"WHERE m.auction_id = "+auctionID+" "+
+							"GROUP BY m.buyer_id "+
+							"ORDER BY top_bid desc "+
+							"LIMIT 1 ";
+		Statement stmtHighest = con.createStatement();
+		ResultSet resHighest = stmtHighest.executeQuery(qryHighest);
+		if (resHighest.next()) { topBid = resHighest.getFloat("top_bid"); }
+	}
+	catch (SQLException e) {
+		e.printStackTrace();
+	}
+	
+	return topBid;
+}
+%>
+
 </head>
 
 <body style='font-family: sans-serif'>
@@ -46,7 +71,7 @@ session.setAttribute("selectFail", false);
 		<%
 		try {
 			// Retrieve all auctions that user has made a bid on
-			String qry =	"SELECT a.auction_id, i.model_name, m.bid, a.highest_current_bid "+
+			String qry =	"SELECT a.auction_id, i.model_name, max(m.bid) bid, a.highest_current_bid "+
 							"FROM makes_bid m "+
 							"INNER JOIN auctions a ON m.auction_id = a.auction_id "+
 							"INNER JOIN items i ON a.item_id = i.item_id "+
@@ -62,13 +87,14 @@ session.setAttribute("selectFail", false);
 				int auctionID = res.getInt("auction_id");
 				String modelName = res.getString("model_name");
 				float bid = res.getFloat("bid");
-				float topBid = res.getFloat("highest_current_bid");
 				
 				out.print(	"<td>"+auctionID+"</td>"+
 							"<td>"+modelName+"</td>"+
 							"<td>"+bid+"</td>");
 				
+				
 				// Green if you are top bid, red if other
+				float topBid = getHighestBid(con, auctionID);
 				if (bid >= topBid) { out.print("<td style='color:green;'>"); }
 				else { out.print("<td style='color:red;'>"); }
 				out.print(topBid+"</td>");
@@ -111,7 +137,8 @@ session.setAttribute("selectFail", false);
 				
 				int auctionID = res.getInt("auction_id");
 				String modelName = res.getString("model_name");
-				float topBid = res.getFloat("highest_current_bid");
+				//float topBid = res.getFloat("highest_current_bid");
+				float topBid = getHighestBid(con, auctionID);
 				
 				out.print(	"<td>"+auctionID+"</td>"+
 							"<td>"+modelName+"</td>"+
