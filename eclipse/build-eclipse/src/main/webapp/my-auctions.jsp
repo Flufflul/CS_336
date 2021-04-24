@@ -7,8 +7,14 @@
 <html>
 
 <head>
+
 <meta charset="UTF-8">
 <title>CS 336: My Auctions</title>
+
+<%
+session.setAttribute("bidFail", false);
+%>
+
 </head>
 
 <body style='font-family: sans-serif'>

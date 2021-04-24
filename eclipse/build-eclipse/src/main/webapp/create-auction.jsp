@@ -87,7 +87,7 @@
 		// Set (hidden) minimum threshold for auction
 		out.print("<tr>");
 		
-		out.print("<td style='text-align:right'><label for='hidden-price'>Minimum bid threshold $</label></td>");
+		out.print("<td style='text-align:right'><label for='hidden-price'>Minimum bid threshold (hidden) $</label></td>");
 		out.print("<td><input type='number' name='hidden_price' placeholder='0'/></td>");
 		
 		out.print("</tr>");

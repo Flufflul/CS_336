@@ -58,17 +58,20 @@
 	<form method="POST" action="make-bid-details.jsp">
 		<table>
 			<tr>
-				<td><label for='auctions'>Select auction</label></td>
+				<td><label for='auctions'>Select auction</label></td>				
 				<td><select name='auctions' onchange='itemCheck(this);'>
 					<option value=''></option>
 					<%
 					/* List all auctions */
+					// Username
+					String user = (String) session.getAttribute("user");
 					
-					// Retrieve list of auctions with item info
+					// Retrieve list of auctions with item info NOT by user
 					Statement stmt = con.createStatement();
 					String qry = 	"SELECT a.auction_id, a.seller_id, i.model_name "+
 									"FROM auctions a "+
-									"INNER JOIN items i ON a.item_id = i.item_id ";
+									"INNER JOIN items i ON a.item_id = i.item_id "+
+									"WHERE a.seller_id <> '"+user+"' ";
 					ResultSet res = stmt.executeQuery(qry);
 					
 					// List auctions
@@ -81,6 +84,12 @@
 					}
 					%>
 				</select></td>
+				<%
+				Object strBidFail = session.getAttribute("bidFail");
+				Boolean bidFail = (Boolean) strBidFail;
+				if (bidFail) { out.print("<td><p style='color:red;'>*Please select a valid option</p></td>"); }
+				session.setAttribute("bidFail", false);
+				%>
 			</tr>
 			<!-- 
 			<tr>
