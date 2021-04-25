@@ -45,12 +45,13 @@
 		out.print(e);
 	}
 	%>
+
 	<a href='search_page.jsp'> Search for auctions </a>
 	<br>
-	
 	<a href='my-auctions.jsp'>Your auctions</a>
-	
-	
+	<br>
+	<a href='autobidRequest.jsp'> Start an Autobid!</a>
+	<br>
 	<br><br><br><br><a href='customerSupport_page.jsp'>Need help? Contact customer support</a>
 </body>
 </html>
