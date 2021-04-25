@@ -12,6 +12,11 @@
 <a href="profile.jsp">Back</a>
 <hr><br>
 <a href="profile.jsp"><button onclick="demo()">Alarm Has Been Set. Click To Redirect To Home</button></a>
+<% 
+String id = request.getParameter("alert"); 
+String user = (String) session.getAttribute("user");  
+%>
+
 <script>
 function demo() {
 alert("Thank You For Your Interest!");
