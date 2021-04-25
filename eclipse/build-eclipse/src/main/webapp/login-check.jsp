@@ -12,6 +12,8 @@
 </head>
 <body>
 	<a href="login.jsp">Return to login</a>
+	<br>
+	<br>
 	<hr><br>
 	<%
 		try {
@@ -31,46 +33,67 @@
             // out.println("<p>Executed query</p>");
 
             out.print("<h1>");
-            if (!accounts.next()) { out.println("No such account."); }
-            else if (accounts.getString("password").equals(pw)) { 
-            	session.setAttribute("user", id);
+            if (!accounts.next()) { 
             	
-            	String uid = accounts.getString("username");
-            	session.setAttribute("user_id", uid);
-            
-            	String qry = "SELECT * FROM admin_staff WHERE admin_name = '"+ uid + "'";
-            	ResultSet temp = stmt.executeQuery(qry);
-            	if (temp.next()) { 
-            		session.setAttribute("priv", "admin_staff");
-            	}
+            	out.println("No such account."); 
             	
-            	qry = "SELECT * FROM customer_rep WHERE rep_name = '"+ uid + "'";
-            	temp = stmt.executeQuery(qry);
-            	if (temp.next()) {
-            		session.setAttribute("priv", "customer_rep");
-            	}
+            }else{
             	
-            	if (session.getAttribute("priv") == null) { 
-            		session.setAttribute("priv", "end_user"); 
-            	}
-            	
-            	out.print("Welcome, " + id);
-            	
-            	response.sendRedirect("profile.jsp"); 
-            	}
-            else { out.println("Incorrect password."); }
-            out.print("</h1>");
-            
-            //setup important session info
-            session.setAttribute("itemFail", false); 	//item is empty
-            session.setAttribute("expFail", false);		//expiration date is empty
-            
-        	session.setAttribute("modelNameFail", false);		//modelname is empty
-        	session.setAttribute("manufacturerFail", false);	//manufacturer is empty
-        	session.setAttribute("numStringsFail", false);		//numstrings is empty
-        	
-        	session.setAttribute("elPickupConfigFail", false);	//acoustic fail
-        	session.setAttribute("acelPickupTypeFail", false);	//acoustic-electric fail
+            	 //check if banned
+                int banned = accounts.getInt("deleted");
+                String username = accounts.getString("username");
+                
+                if(banned == 1){
+                	
+                	out.print("<h2>User: " + username + " is banned</h2>");
+                	
+                	
+                } else if (accounts.getString("password").equals(pw)) { 
+                	session.setAttribute("user", id);
+                	
+                	String uid = accounts.getString("username");
+                	session.setAttribute("user_id", uid);
+                
+                	String qry = "SELECT * FROM admin_staff WHERE admin_name = '"+ uid + "'";
+                	ResultSet temp = stmt.executeQuery(qry);
+                	
+                	if (temp.next()) { 
+                		session.setAttribute("priv", "admin_staff");
+                	}
+                	
+                	
+                	qry = "SELECT * FROM customer_rep WHERE rep_name = '"+ uid + "'";
+                	temp = stmt.executeQuery(qry);
+                	if (temp.next()) {
+                		session.setAttribute("priv", "customer_rep");
+                	}
+                	
+                	if (session.getAttribute("priv") == null) { 
+                		session.setAttribute("priv", "end_user"); 
+                	}
+                	
+                		out.print("Welcome, " + id);
+                	
+                		response.sendRedirect("profile.jsp"); 
+                
+                } else { 
+                	out.println("Incorrect password.");
+                }
+      	          out.print("</h1>");
+      	          
+      	     	  //setup important session info
+                  session.setAttribute("itemFail", false); 	//item is empty
+                  session.setAttribute("expFail", false);		//expiration date is empty
+                  
+              	  session.setAttribute("modelNameFail", false);		//modelname is empty
+              	  session.setAttribute("manufacturerFail", false);	//manufacturer is empty
+              	  session.setAttribute("numStringsFail", false);		//numstrings is empty
+              	
+              	  session.setAttribute("elPickupConfigFail", false);	//acoustic fail
+              	  session.setAttribute("acelPickupTypeFail", false);	//acoustic-electric fail
+
+      	          
+           	}
 
             
 			//close the connection.
