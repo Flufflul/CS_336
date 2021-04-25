@@ -47,11 +47,11 @@
 			<h1> The History of Auction ID #<% out.println(key); %>'s Auction </h1>
 				
 			<table id = myTable>
-			<tr><th> <% out.println("Buyer's Name"); %>
+			<tr><th> <% out.println("Buyer's Name"); %> </th>
 			<th> <% out.println("Bid Amount"); %> </th>
 			<th> <% out.println("Bid Time"); %></th>
 			</tr>
-			<tr>
+		
 			<% 
 		
 		while (accounts.next()) {
@@ -60,6 +60,7 @@
 			String time  =  accounts.getString("bid"); 
 			
 			%>
+			<tr>
 			<td> <%out.print(modelNUM); %> </td>
 			<td> <%out.print(time); %> </td>
 			<td> <%out.print(auctionid); }%> </td>

@@ -48,7 +48,7 @@
 			
 					
 			<table id = myTable>
-			<tr><th> <% out.println("Item Name"); %>
+			<tr><th> <% out.println("Item Name"); %> </th>
 			<th> <% out.println("Auction ID"); %> </th>
 			<th> <% out.println("Bid Time"); %></th>
 			</tr>
@@ -61,6 +61,7 @@
 			String time  =  accounts.getString("bid_time"); 
 			
 			%>
+			<tr>
 			<td> <%out.print(modelNUM); %> </td>
 			<td> <%out.print(auctionid); %> </td>
 			<td> <%out.print(time); }%> </td>
