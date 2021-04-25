@@ -33,25 +33,22 @@
 								"AND a.winner = '' ";
 					
 					ResultSet r = stmt.executeQuery(qry);
+
 					
 					// List auctions
 					while (r.next()) {
 						int aid  = r.getInt("auction_id");
 						String seller = r.getString("seller_id");
 						String modelName = r.getString("model_name");
-						float min_inc = r.getFloat("min_increment");
-						session.setAttribute("min_increment", min_inc);
-						
+						float min_inc = r.getFloat("min_increment");	
 						float starting_price = r.getFloat("starting_price");
-						session.setAttribute("starting_price",starting_price);
 						float highest_current_bid = r.getFloat("highest_current_bid");
-						session.setAttribute("highest_current_bid", highest_current_bid);
+						
 						
 						out.print("<option value='"+aid+"'>"+ modelName +" by "+seller+
 								"  Starting At $" + starting_price + "  Current At: "+ 
 								highest_current_bid + "  Minimum Increcement: " + min_inc + "</option>");
-					}
-					con.close();
+					}	
 					%>
 				</select></td>
 			<tr> 
@@ -64,5 +61,7 @@
 		</table>
 		<input type="submit" value="submit">
 	</form>
+	If you have manually made bid on the selected auction and are on lead, autobid will not make a new bid according to your setting. 
+	<%con.close(); %>
 </body>
 </html>
