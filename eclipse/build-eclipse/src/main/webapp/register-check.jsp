@@ -24,6 +24,7 @@
 			Statement stmt = con.createStatement(); 
 			String id = request.getParameter("username"); 
             String pw = request.getParameter("password"); 
+            String em = request.getParameter("email");
             // out.println("<p>After POST. id: " + id + ", pw: " + pw + "</p>");
 			String str = "SELECT * FROM users WHERE username = '"+ id +"'";
             // out.println("<p>Query: " + str + "</p>");
@@ -32,7 +33,7 @@
 
             out.print("<h1>");
             if (!accounts.next()) {
-            	String newAcc = "INSERT INTO users (username, password) VALUES ('"+ id +"','"+ pw +"');";
+            	String newAcc = "INSERT INTO users VALUES ('"+ id +"','"+ pw +"','"+ em + "',"+false+");";
             	stmt.executeUpdate(newAcc);
             	
             	out.println("Account registered!");

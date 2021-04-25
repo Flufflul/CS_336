@@ -18,15 +18,16 @@
 		<form method="POST" action="register-check.jsp">
 			<table>
 				<tr>
-					<td><b>Username:</b></td>
+					<td><label for='username'><b>Username:</b></label></td>
 					<td><input type="text" name="username"></td>
 				</tr>
 				<tr>
-					<td><b>Password:</b></td>
+					<td><label for='password'><b>Password:</b></label></td>
 					<td><input type="password" name="password"></td>
 				</tr>
 				<tr>
-					<td><b></b>
+					<td><label for='email'><b>Email:</b></label></td>
+					<td><input type="text" name="email"></td>
 				</tr>
 			</table>
 			<input type="submit" value="Register account">
