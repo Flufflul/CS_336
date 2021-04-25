@@ -25,6 +25,9 @@
 					<td><b>Password:</b></td>
 					<td><input type="password" name="password"></td>
 				</tr>
+				<tr>
+					<td><b></b>
+				</tr>
 			</table>
 			<input type="submit" value="Register account">
 		</form>

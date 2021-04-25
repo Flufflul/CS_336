@@ -137,7 +137,7 @@
 			String user = (String) session.getAttribute("user");
 			
 			Statement stmtBidCheck = con.createStatement();
-			String qryBidCheck = 	"SELECT *, max(bid) top_bid "+
+			String qryBidCheck = 	"SELECT max(bid) top_bid "+
 									"FROM makes_bid m "+
 									"WHERE buyer_id = '"+user+"' "+
 									"AND auction_id = "+auctionID;
