@@ -167,6 +167,56 @@
 			<tr>
 				<td></td>
 				<td><input type="submit" value="Next" style="width:100%;"/></td>
+	
+			</tr>
+		</table>
+	</form>
+	
+	
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	
+	<h2> Setting Up Alerts For Items  </h2>
+	<form method="POST" action="Alerts_Users.jsp">
+		<table>
+			<tr>
+				<td><label for='alert'>Select Item</label></td>				
+				<td><select name='alert' onchange='itemCheck(this);'>
+					<option value=''></option>
+					<%
+					/* List all auctions */
+					// Username
+					
+					// Retrieve list of auctions with item info NOT by user
+					
+					String qrysss = 	"SELECT I.model_name "+
+									"FROM Items I ";
+									
+					ResultSet ressss = stmt.executeQuery(qrysss);
+					
+					// List auctions
+					while (ressss.next()) {
+	
+						String itemnamess		= ressss.getString("model_name");
+						
+						out.print("<option value='"+itemnamess+"'>"+itemnamess+"</option>");
+					}
+					%>
+				</select></td>
+				<%
+				Object strSelectFailsss = session.getAttribute("selectFail");
+				Boolean selectFailsss = (Boolean) strSelectFail;
+				if (selectFail) { out.print("<td><p style='color:red;'>*Please select a valid option</p></td>"); }
+				session.setAttribute("selectFail", false);
+				%>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Next" style="width:100%;"/></td>
 				<% db.closeConnection(con); %>
 			</tr>
 		</table>

@@ -70,8 +70,7 @@
 		<button onclick ="sortTable(3)" >Highest Bid</button>
 		<button onclick ="sortTable(4)" >Expires</button>
 		<button onclick ="sortTable(5)" >Buy Now Price</button>
-		<a href="users_history.jsp">Users History</a>
-		<a href="Alerts_Users.jsp">Alerts</a>
+		<a href="users_history.jsp">More Options</a>
 		<br>
 		<br>
 		<table id = "myTable">
