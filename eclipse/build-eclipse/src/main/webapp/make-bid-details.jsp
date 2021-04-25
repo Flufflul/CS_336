@@ -64,6 +64,7 @@
 			if (!res.next()) {
 				String qry_aeg = "INNER JOIN acoustic_electric_guitar g ON a.item_id = g.item_id ";
 				res = stmt.executeQuery(qry_fragment + qry_aeg + qry_this);
+				res.next();
 			}
 		}
 		

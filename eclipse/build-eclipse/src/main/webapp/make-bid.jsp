@@ -110,6 +110,7 @@
 			</tr>
 		</table>
 	</form>
-	
+
+<% db.closeConnection(con); %>
 </body>
 </html>
