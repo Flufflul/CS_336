@@ -35,8 +35,7 @@
 			out.print("<em><a href='customerRep_page.jsp'>customer representative</a></em> ");
 		}
 		
-		if (!isStaff) {
-			out.print("privileges.</h3>");
+		if (!isStaff) {	out.print("privileges.</h3>");
 		}
 		
 		db.closeConnection(con);
