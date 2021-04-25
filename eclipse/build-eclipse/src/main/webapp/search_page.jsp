@@ -6,11 +6,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%
-	session.setAttribute("bidFail", false);
-	session.setAttribute("tempAucID", -1);
-	session.setAttribute("bidSuccess", false);
-	%>
 <style>
 #myTable {
   font-family: Arial, Helvetica, sans-serif;

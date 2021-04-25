@@ -68,9 +68,7 @@
 		<th> <% out.print("Highest Current Bid"); %> </th>
 		<th> <% out.print("Expires"); %> </th>
 		<th> <% out.print("Buy Now Price"); %> </th>
-		<th> <% out.print(""); %> </th>
-		<th> <% out.print(""); %> </th>
-		<th> <% out.print(""); %> </th>
+
 		</tr>
 	
 		<% 
@@ -87,9 +85,6 @@
 			<td> <%out.print(highest_current_bid); %> </td>
 			<td> <%out.print(expires); %> </td>
 			<td> <%out.print(buy_now_price); %> </td>
-			<td> <a href="set_alert.jsp">Alert</a> </td>
-			<td> <a href="history_of_items.jsp">History</a> </td>
-			<td> <a href="make-bid-details.jsp">Make Bid</a> </td> 
 			
 		<%
 		}
