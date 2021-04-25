@@ -7,6 +7,7 @@
 <html>
 <head>
 
+
 	<meta charset="UTF-8">
 	<title>User History</title>
 	
@@ -27,14 +28,14 @@
 
 <body style='font-family: sans-serif'>
 
-	<a href='item_detail.jsp'>Back</a>
+	<a href='search_page.jsp'>Back</a>
 	<hr><br>
-	
+	<h2> History Of A Specific Person </h2>
 	<form method="POST" action="history_detail.jsp">
 		<table>
 			<tr>
-				<td><label for='auctions'>Select A Name</label></td>				
-				<td><select name='auctions' onchange='itemCheck(this);'>
+				<td><label for='item'>Select Name</label></td>				
+				<td><select name='item' onchange='itemCheck(this);'>
 					<option value=''></option>
 					<%
 					/* List all auctions */
@@ -69,7 +70,57 @@
 			</tr>
 		</table>
 	</form>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	
+	<h2> History Of A Specific Auction </h2>
+	<form method="POST" action="Individual_Item.jsp">
+		<table>
+			<tr>
+				<td><label for='items'>Select Auction</label></td>				
+				<td><select name='items' onchange='itemCheck(this);'>
+					<option value=''></option>
+					<%
+					/* List all auctions */
+					// Username
+					
+					// Retrieve list of auctions with item info NOT by user
+					Statement stmts = con.createStatement();
+					String qrys = 	"SELECT A.auction_id, I.model_name  "+
+									"FROM Auctions A, Items I "+
+									"WHERE A.item_id = I.item_id";
+					
+					ResultSet ress = stmt.executeQuery(qrys);
+					
+					// List auctions
+					while (ress.next()) {
+	
+						String itemname		= ress.getString("model_name");
+						String itemkey      = ress.getString("auction_id");
+						
+						out.print("<option value='"+itemkey+"'>"+itemkey+" "+itemname+"</option>");
+					}
+					%>
+				</select></td>
+				<%
+				Object strSelectFails = session.getAttribute("selectFail");
+				Boolean selectFails = (Boolean) strSelectFail;
+				if (selectFail) { out.print("<td><p style='color:red;'>*Please select a valid option</p></td>"); }
+				session.setAttribute("selectFail", false);
+				%>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Next" style="width:100%;"/></td>
+				<% db.closeConnection(con); %>
+			</tr>
+		</table>
+	</form>
 
-<% db.closeConnection(con); %>
+
 </body>
 </html>
