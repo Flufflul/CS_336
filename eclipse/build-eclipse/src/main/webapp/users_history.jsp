@@ -89,7 +89,7 @@
 					// Username
 					
 					// Retrieve list of auctions with item info NOT by user
-					Statement stmts = con.createStatement();
+				
 					String qrys = 	"SELECT A.auction_id, I.model_name  "+
 									"FROM Auctions A, Items I "+
 									"WHERE A.item_id = I.item_id";
@@ -109,6 +109,57 @@
 				<%
 				Object strSelectFails = session.getAttribute("selectFail");
 				Boolean selectFails = (Boolean) strSelectFail;
+				if (selectFail) { out.print("<td><p style='color:red;'>*Please select a valid option</p></td>"); }
+				session.setAttribute("selectFail", false);
+				%>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Next" style="width:100%;"/></td>
+				
+			</tr>
+		</table>
+	</form>
+	
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	
+	<h2> History Of Item Similar One Month Ago </h2>
+	<form method="POST" action="OneMonthLater.jsp">
+		<table>
+			<tr>
+				<td><label for='month'>Select Item</label></td>				
+				<td><select name='month' onchange='itemCheck(this);'>
+					<option value=''></option>
+					<%
+					/* List all auctions */
+					// Username
+					
+					// Retrieve list of auctions with item info NOT by user
+					
+					String qryss = 	"SELECT A.auction_id, I.model_name "+
+									"FROM Auctions A, Items I "+
+									"WHERE A.item_id = I.item_id";
+					
+					ResultSet resss = stmt.executeQuery(qryss);
+					
+					// List auctions
+					while (resss.next()) {
+	
+						String itemnames		= resss.getString("model_name");
+						String itemkeys      = resss.getString("auction_id");
+						
+						out.print("<option value='"+itemkeys+"'>"+itemkeys+" "+itemnames+"</option>");
+					}
+					%>
+				</select></td>
+				<%
+				Object strSelectFailss = session.getAttribute("selectFail");
+				Boolean selectFailss = (Boolean) strSelectFail;
 				if (selectFail) { out.print("<td><p style='color:red;'>*Please select a valid option</p></td>"); }
 				session.setAttribute("selectFail", false);
 				%>
