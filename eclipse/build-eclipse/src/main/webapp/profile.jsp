@@ -45,6 +45,8 @@
 		out.print(e);
 	}
 	%>
+	<a href='search_page.jsp'> Search for auctions </a>
+	<br>
 	
 	<a href='my-auctions.jsp'>Your auctions</a>
 	
