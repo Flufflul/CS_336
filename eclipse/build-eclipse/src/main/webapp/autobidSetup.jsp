@@ -84,7 +84,7 @@
 					//get the most recent bid on this auction made by this user
 					qry = "SELECT * FROM makes_bid WHERE buyer_id = '"+ uid + "' " + 
 						"AND auction_id = " + aid + " " + 
-						"AND bid_time = (SELECT MAX(b.bid_time) FROM makes_bid b WHERE b.buyer_id = buyer_id AND b.auction_id = auction_id)" ;
+						"AND bid_time = (SELECT MAX(b.bid_time) FROM makes_bid b WHERE b.buyer_id = '"+ uid +"' AND b.auction_id = auction_id)" ;
 
 					res = stmt.executeQuery(qry);
 					
