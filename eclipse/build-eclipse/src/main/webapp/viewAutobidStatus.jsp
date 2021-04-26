@@ -33,9 +33,9 @@
 //list of auction the user set autobid with
 	try {
 		Statement st = con.createStatement();
-		String abqry = "SELECT a.auction_id,i.model_name, a.seller_id, "+ 
-				"a.highest_current_bid, a.winner, b.bid"+
-				"From items i, auctions a, makes_bid b " +
+		String abqry = "SELECT a.auction_id, i.model_name, a.seller_id, "+ 
+				"a.highest_current_bid, a.winner, b.bid "+
+				"FROM items i, auctions a, makes_bid b " +
 				"WHERE i.item_id = a.item_id " +
 				"AND a.auction_id = b.auction_id " +
 				"AND b.buyer_id = '" + user + "' " +
