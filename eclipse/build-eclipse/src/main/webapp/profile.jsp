@@ -49,7 +49,7 @@
 	<br>
 	<a href='my-auctions.jsp'>Your auctions</a>
 	<br>
-	<a href='autobidRequest.jsp'> Start an Autobid!</a>
+	<a href='viewAutobidStatus.jsp'> View My Autobid</a>
 	<br>
 	<br><br><br><br><a href='customerSupport_page.jsp'>Need help? Contact customer support</a>
 </body>

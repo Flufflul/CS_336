@@ -62,6 +62,8 @@
 		<input type="submit" value="submit">
 	</form>
 	If you have manually made bid on the selected auction and are on lead, autobid will not make a new bid according to your setting. 
-	<%con.close(); %>
+	<%
+	stmt.close();
+	con.close(); %>
 </body>
 </html>

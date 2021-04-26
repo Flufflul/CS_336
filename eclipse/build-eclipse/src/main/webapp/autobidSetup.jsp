@@ -136,9 +136,11 @@
 				out.println("<br>You're all set!");
 				
 				out.println("<br><a href='my-auctions.jsp'>View All My Auctions</a>");
+				out.println("<br><a href='viewAutobidStatus.jsp'>View Autobids only</a>");
 				out.println("<br><a href='profile.jsp'>Back to My Profile</a>");
 			}
-	
+			
+			stmt.close();
 			db.closeConnection(con);
 			} catch (Exception e) {
 				e.printStackTrace();
